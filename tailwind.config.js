@@ -13,7 +13,8 @@ module.exports = withMT({
         shinyBlue: "rgba(0, 91, 194, 1)",
         darkActive: "rgba(31, 41, 55, 1)",
         blueFold: "#3B82F6",
-        lightFur: "#D0F5FF"
+        lightFur: "#D0F5FF",
+        darkCrayola: "#374151"
       }
     },
   },

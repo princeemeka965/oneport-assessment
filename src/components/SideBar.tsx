@@ -33,7 +33,7 @@ const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen }) => {
   return (
     <>
       <div
-        className={`sidebar right-0 h-full fixed bg-darkActive lg:w-[300px] md:w-[300px] w-full lg:top-[5.8rem] top-0 ${
+        className={`sidebar right-0 h-full fixed bg-darkActive lg:w-[300px] md:w-[300px] w-3/4 lg:top-[5.8rem] top-0 ${
           sideBarOpen ? "open" : "closed"
         }`}
       >
@@ -59,14 +59,22 @@ const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen }) => {
           {/**
            * Side Bar Contents
            */}
-          <div className="flex w-full flex-col gap-2 my-3">
+          <div className="flex w-full flex-col gap-6 my-3">
             {sideContentData.map((contentData, index) => (
-              <div className="w-full flex flex-col h-full py-2" key={index}>
-                <div className="w-full flex justify-between">
-                  <p className="text-xs text-lightFur">{contentData.amount}</p>
-                </div>
-                <div className="w-full flex my-3">
-                  <p className="text-blueFold text-xs">{contentData.text}</p>
+              <div
+                className="w-full flex hover:bg-lightFur group cursor-pointer"
+                key={index}
+              >
+                <div className="w-1 flex flex-col mx-1 my-1 flex-grow bg-darkCrayola" />
+                <div className="w-full flex flex-col h-full py-1 px-2">
+                  <div className="w-full flex justify-between">
+                    <p className="text-xs text-lightFur group-hover:text-blueFold">
+                      {contentData.amount}
+                    </p>
+                  </div>
+                  <div className="w-full flex mt-3">
+                    <p className="text-blueFold text-xs">{contentData.text}</p>
+                  </div>
                 </div>
               </div>
             ))}
