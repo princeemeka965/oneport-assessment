@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "./SvgIcons";
 
+interface ChildComponentProps {
+  openDrawer: (data: { selectedDate: String; openModal: Boolean }) => void;
+}
+
 interface Quote {
   date: Date;
   count: number;
@@ -35,7 +39,7 @@ const months: string[] = [
   "Dec",
 ];
 
-const Calendar: React.FC = () => {
+const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
   const currentMonth = new Date().getMonth(); // get the current Month
   const currentDay = new Date().getDate(); // get today's date
   const [year, setYear] = useState<number>(2024); // Simulate 2024 as the year to use
@@ -89,18 +93,27 @@ const Calendar: React.FC = () => {
   }
 
   const getWeekDetails = (data: any) => {
-    const splitDate = data.split("-");
+    const splitDate = data.split("-"); // split date to get year, month and day
     // convert to ISOString
-    convertToISOString(splitDate[0], splitDate[1], splitDate[2]);
+    const dateData = convertToISOString(
+      splitDate[0],
+      splitDate[1],
+      splitDate[2]
+    );
+    const propsObj: { selectedDate: String; openModal: Boolean } = {
+      selectedDate: dateData,
+      openModal: true,
+    };
+    openDrawer(propsObj);
   };
 
   const convertToISOString = (
     day: number,
     month: number,
     year: number
-  ): void => {
+  ): String => {
     const date = new Date(Date.UTC(year, month, day)); // Month is zero-indexed
-    console.log(date.toISOString());
+    return date.toISOString();
   };
 
   const getMonthsValue = (data: string): string => {

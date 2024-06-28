@@ -11,7 +11,9 @@ module.exports = withMT({
         shinyGrey: "#969696",
         tagGreen: "rgba(152, 255, 155, 0.25)",
         shinyBlue: "rgba(0, 91, 194, 1)",
-        darkActive: "rgba(31, 41, 55, 1)"
+        darkActive: "rgba(31, 41, 55, 1)",
+        blueFold: "#3B82F6",
+        lightFur: "#D0F5FF"
       }
     },
   },
