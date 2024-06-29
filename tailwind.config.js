@@ -18,7 +18,10 @@ module.exports = withMT({
         darkGreen: "#007003",
         desire: "#E11435",
         romanSilver: "#6B7280",
-        seaGreen: "#0618028C"
+        seaGreen: "#0618028C",
+        lightGreen: "#37B24833",
+        lightGray: "#FAFAFA",
+        maniacGray: "#F9FAFB"
       }
     },
   },

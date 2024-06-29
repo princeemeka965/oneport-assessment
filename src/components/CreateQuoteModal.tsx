@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ModalProps {
   isOpen: Boolean;
@@ -6,6 +7,12 @@ interface ModalProps {
 }
 
 const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+
+  const moveToNewQuote = () => {
+    navigate("/new-quote");
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -59,6 +66,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             <button
               type="button"
               className="bg-darkGreen text-white p-3 text-sm rounded-md"
+              onClick={() => moveToNewQuote()}
             >
               Create New Quote
             </button>

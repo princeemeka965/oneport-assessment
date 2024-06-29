@@ -50,3 +50,7 @@ body,
 .sidebar.closed {
   transform: translateX(100%);
 }
+
+button {
+  border: 1px solid #f3f4f6;
+}
