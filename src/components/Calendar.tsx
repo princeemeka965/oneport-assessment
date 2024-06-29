@@ -42,8 +42,8 @@ const months: string[] = [
 const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
   const currentMonth = new Date().getMonth(); // get the current Month
   const currentDay = new Date().getDate(); // get today's date
-  const [year, setYear] = useState<number>(2024); // Simulate 2024 as the year to use
-  const [month, setMonth] = useState<number>(currentMonth); // Set the current
+  const [year] = useState<number>(2024); // Simulate 2024 as the year to use
+  const [month] = useState<number>(currentMonth); // Set the current
   const [clickedDay, setClickedDay] = useState(0); // get the value of each clicked day
 
   const quotes = generateQuotes(year, month);
