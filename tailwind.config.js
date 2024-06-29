@@ -14,7 +14,11 @@ module.exports = withMT({
         darkActive: "rgba(31, 41, 55, 1)",
         blueFold: "#3B82F6",
         lightFur: "#D0F5FF",
-        darkCrayola: "#374151"
+        darkCrayola: "#374151",
+        darkGreen: "#007003",
+        desire: "#E11435",
+        romanSilver: "#6B7280",
+        seaGreen: "#0618028C"
       }
     },
   },

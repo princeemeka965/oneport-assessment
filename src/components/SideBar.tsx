@@ -3,6 +3,7 @@ import { Sun } from "./SvgIcons";
 
 interface ChildComponentProps {
   sideBarOpen: Boolean;
+  openQuote: (data: Boolean) => void;
 }
 
 interface SideContent {
@@ -29,7 +30,7 @@ const sideContentData: SideContent[] = [
   },
 ];
 
-const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen }) => {
+const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen, openQuote }) => {
   return (
     <>
       <div
@@ -37,7 +38,7 @@ const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen }) => {
           sideBarOpen ? "open" : "closed"
         }`}
       >
-        <div className="w-full flex p-5 flex-col gap-2">
+        <div className="w-full flex p-5 flex-col justify-between gap-2">
           {/**
            * Side Bar Header
            */}
@@ -78,6 +79,17 @@ const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen }) => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="w-full flex">
+            <div
+              className="bg-white w-full rounded-md p-2 flex cursor-pointer justify-center"
+              onClick={() => openQuote(true)}
+            >
+              <span className="text-xs text-shinyBlack flex gap-1">
+                <p className="font-black">&#43;</p>{" "}
+                <p className="flex flex-col justify-center">Add new quote</p>
+              </span>
+            </div>
           </div>
         </div>
       </div>
