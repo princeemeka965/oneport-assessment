@@ -10,7 +10,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-seaGreen bg-opacity-50">
-      <div className="bg-white rounded-md shadow-lg lg:w-1/3 md:w-1/3 w-3/4">
+      <div className="bg-white rounded-md shadow-lg lg:w-1/3 md:w-1/3 w-full">
         <div className="flex justify-between items-center pt-5 pb-3 px-6">
           <div className="flex flex-col gap-1">
             <h2 className="text-base font-semibold">Create New Quote</h2>

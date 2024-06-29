@@ -122,10 +122,12 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full flex justify-between p-4">
+      <div className="w-full flex justify-between lg:p-4 md:p-4 py-4 px-1">
         <span className="flex flex-grow">
           <span className="flex flex-col">
-            <h2 className="text-2xl font-semibold">All Existing Quotes</h2>
+            <h2 className="lg:text-2xl md:text-2xl text-base font-semibold">
+              All Existing Quotes
+            </h2>
             <h1 className="text-xs" style={{ color: "#6B7280" }}>
               View all created quotes
             </h1>
@@ -134,12 +136,14 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
         <span className="flex flex-col justify-center">
           <span className="flex gap-3">
             <span className="flex gap-1">
-              <p className="text-2xl">
+              <p className="lg:text-2xl md:text-2xl text-base">
                 {`${getMonthsValue(String(month).padStart(2, "0"))}`}
               </p>
-              <p className="text-2xl text-shinyGreen">{year}</p>
+              <p className="lg:text-2xl md:text-2xl text-base text-shinyGreen">
+                {year}
+              </p>
             </span>
-            <span className="flex gap-3">
+            <span className="flex lg:gap-2 md:gap-2 gap-1">
               <p className="flex flex-col justify-center">
                 <ChevronLeft />
               </p>
@@ -150,24 +154,26 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
           </span>
         </span>
       </div>
-      <table className="calendar">
-        <thead>
-          <tr>
-            <th>Sun</th>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
-            <th>Sat</th>
-          </tr>
-        </thead>
-        <tbody>
-          {weeks.map((week, index) => (
-            <tr key={index}>{week}</tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="w-full overflow-x-auto">
+        <table className="calendar table-auto w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-3 font-[500] text-shinyGrey">Sun</th>
+              <th className="px-4 py-3 font-[500] text-shinyGrey">Mon</th>
+              <th className="px-4 py-3 font-[500] text-shinyGrey">Tue</th>
+              <th className="px-4 py-3 font-[500] text-shinyGrey">Wed</th>
+              <th className="px-4 py-3 font-[500] text-shinyGrey">Thu</th>
+              <th className="px-4 py-3 font-[500] text-shinyGrey">Fri</th>
+              <th className="px-4 py-3 font-[500] text-shinyGrey">Sat</th>
+            </tr>
+          </thead>
+          <tbody>
+            {weeks.map((week, index) => (
+              <tr key={index}>{week}</tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

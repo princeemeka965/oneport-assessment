@@ -9,24 +9,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .calendar {
-  width: 100%;
-  border-collapse: collapse;
+  @apply w-full border-collapse;
 }
 
 .calendar th,
 .calendar td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  cursor: pointer;
-}
-
-.calendar th {
-  border-radius: 5px;
-}
-
-.calendar td {
-  vertical-align: top;
+  @apply border border-gray-300 px-2 py-1 cursor-pointer;
 }
 
 .bg-darkActive div {

@@ -34,7 +34,7 @@ const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen, openQuote }) => {
   return (
     <>
       <div
-        className={`sidebar right-0 h-full fixed bg-darkActive lg:w-[300px] md:w-[300px] w-3/4 lg:top-[5.8rem] top-0 ${
+        className={`sidebar right-0 h-full fixed bg-darkActive lg:w-[300px] md:w-[300px] w-full lg:top-[5.8rem] top-0 ${
           sideBarOpen ? "open" : "closed"
         }`}
       >
