@@ -151,7 +151,13 @@ const SectionsBlock: React.FC = ({}) => {
     ]);
   };
 
-  console.log(sectionsData);
+  const removeSection = (data: any) => {
+    // get sections aside from the removed one
+    const filteredSection = sectionsData.filter(
+      (section: SectionDataProps) => section._id !== data
+    );
+    setSectionsData(filteredSection);
+  };
 
   return (
     <>
@@ -176,7 +182,10 @@ const SectionsBlock: React.FC = ({}) => {
                 {index > 0 ? (
                   <div className="flex justify-end">
                     <span className="flex flex-col justify-center">
-                      <p className="text-desire text-xs font-[400] cursor-pointer">
+                      <p
+                        className="text-desire text-xs font-[400] cursor-pointer"
+                        onClick={() => removeSection(section._id)}
+                      >
                         Remove Section
                       </p>
                     </span>
