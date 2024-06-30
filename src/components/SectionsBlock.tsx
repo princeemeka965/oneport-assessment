@@ -1,10 +1,6 @@
+import * as React from "react";
 import { Card } from "@material-tailwind/react";
 import { TrashIcon, USAIcon } from "./SvgIcons";
-
-interface SectionsBlockProps {
-  sectionContents: SectionDataProps[];
-  addBasis: (data: any) => void;
-}
 
 interface SectionDataProps {
   _id: String;
@@ -14,10 +10,47 @@ interface SectionDataProps {
   section_data: {}[];
 }
 
-const SectionsBlock: React.FC<SectionsBlockProps> = ({
-  sectionContents,
-  addBasis,
-}) => {
+let sections: SectionDataProps[];
+
+sections = [
+  {
+    _id: "666e58e5acf1e952ba513199",
+    section_name: "ORIGIN HANDLING CHARGES",
+    section_number: 1,
+    section_currency: "NGN",
+    section_data: [
+      {
+        _id: "666e58e5acf1e952ba51319a",
+        basis: "Basis 1",
+        unit_of_measurement: "Kilogram",
+        unit: 10,
+        rate: 5,
+        amount: 50,
+      },
+    ],
+  },
+
+  {
+    _id: "666e5367Facf1e952ba513199",
+    section_name: "ORIGIN HANDLING CHARGES",
+    section_number: 1,
+    section_currency: "NGN",
+    section_data: [
+      {
+        _id: "666e58e5asdferte952ba51319a",
+        basis: "Basis 1",
+        unit_of_measurement: "Kilogram",
+        unit: 10,
+        rate: 5,
+        amount: 50,
+      },
+    ],
+  },
+];
+
+const SectionsBlock: React.FC = ({}) => {
+  const [sectionsData, setSectionsData] = React.useState<any>(sections);
+
   let TABLE_HEAD: String[] = [
     "Basics",
     "Unit of measure",
@@ -27,15 +60,93 @@ const SectionsBlock: React.FC<SectionsBlockProps> = ({
     "",
   ];
 
+  /**
+   *
+   * Function to add new data to each section
+   */
   const addNewBasis = (data: any) => {
-    addBasis(data);
+    setSectionsData((prevSectionsData: any) =>
+      prevSectionsData.map((section: any) =>
+        section._id === data
+          ? {
+              ...section,
+              section_data: [
+                ...section.section_data,
+                {
+                  _id: Math.random(),
+                  basis: "",
+                  unit_of_measurement: "",
+                  unit: 0,
+                  rate: 0,
+                  amount: 0,
+                },
+              ],
+            }
+          : section
+      )
+    );
+  };
+
+  /**
+   *
+   * @param e
+   * @param sectionId
+   * @param dataId
+   * Function to change measurement value
+   */
+  const changeMeasurement = (e: any, sectionId: any, dataId: any) => {
+    const newMeasurement = e.target.value;
+    setSectionsData((prevSectionsData: any) =>
+      prevSectionsData.map((section: any) =>
+        section._id === sectionId
+          ? {
+              ...section,
+              section_data: section.section_data.map((data: any) =>
+                data._id === dataId
+                  ? { ...data, unit_of_measurement: newMeasurement }
+                  : data
+              ),
+            }
+          : section
+      )
+    );
+  };
+
+  /**
+   *
+   * @param e
+   * @param sectionId
+   * @param dataId
+   * @param slug
+   * Function handles Input Changes for each section basis
+   * here the [slug] is the key which we are applying the changes to
+   */
+  const handleInputChange = (
+    e: any,
+    sectionId: any,
+    dataId: any,
+    slug: any
+  ) => {
+    const newValue = e.target.value;
+    setSectionsData((prevSectionsData: any) =>
+      prevSectionsData.map((section: any) =>
+        section._id === sectionId
+          ? {
+              ...section,
+              section_data: section.section_data.map((data: any) =>
+                data._id === dataId ? { ...data, [slug]: newValue } : data
+              ),
+            }
+          : section
+      )
+    );
   };
 
   return (
     <>
-      {sectionContents.map((section: SectionDataProps, index: number) => (
+      {sectionsData.map((section: SectionDataProps, index: number) => (
         <>
-          <div className="w-full flex gap-12 mb-10" key={index}>
+          <div className="w-full flex gap-12 mb-7" key={index}>
             <div className="flex flex-col lg:w-3/4 md:w-3/4 w-full">
               <div className="w-full flex justify-between">
                 <div className="flex w-max">
@@ -44,6 +155,7 @@ const SectionsBlock: React.FC<SectionsBlockProps> = ({
                     className="w-full h-full py-6 px-3 focus:border focus:outline-none focus:border-boltGreen text-sm"
                     placeholder="Enter Section Label"
                     autoFocus
+                    value={`${section.section_name}`}
                   />
                 </div>
                 {/** Remove other sections except the first one */}
@@ -76,7 +188,7 @@ const SectionsBlock: React.FC<SectionsBlockProps> = ({
                     </tr>
                   </thead>
                   <tbody>
-                    {section.section_data.map((contents, index) => {
+                    {section.section_data.map((contents: any, index) => {
                       const classes = "p-4 border-b border-blue-gray-50";
 
                       return (
@@ -86,11 +198,27 @@ const SectionsBlock: React.FC<SectionsBlockProps> = ({
                               type="text"
                               className="w-full h-full py-2 px-1 focus:outline-none text-sm"
                               placeholder="Enter Basis"
+                              value={`${contents.basis}`}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  e,
+                                  section._id,
+                                  contents._id,
+                                  "basis"
+                                )
+                              }
                             />
                           </td>
                           <td className={classes}>
-                            <select className="w-full h-full py-2 px-1 bg-white focus:outline-none text-sm">
-                              <option>Per Kilogram</option>
+                            <select
+                              className="w-full h-full py-2 px-1 bg-white focus:outline-none text-sm"
+                              value={`${contents.unit_of_measurement}`}
+                              onChange={(e) =>
+                                changeMeasurement(e, section._id, contents._id)
+                              }
+                            >
+                              <option value={"Kilogram"}>Per Kilogram</option>
+                              <option value={"Gram"}>Per Gram</option>
                             </select>
                           </td>
                           <td className={classes}>
@@ -98,6 +226,15 @@ const SectionsBlock: React.FC<SectionsBlockProps> = ({
                               type="text"
                               className="w-full h-full py-2 px-1 focus:outline-none text-sm"
                               placeholder="Enter unit"
+                              value={`${contents.unit}`}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  e,
+                                  section._id,
+                                  contents._id,
+                                  "unit"
+                                )
+                              }
                             />
                           </td>
                           <td className={classes}>
@@ -105,6 +242,15 @@ const SectionsBlock: React.FC<SectionsBlockProps> = ({
                               type="text"
                               className="w-full h-full py-2 px-1 focus:outline-none text-sm"
                               placeholder="Enter rate"
+                              value={`${contents.rate}`}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  e,
+                                  section._id,
+                                  contents._id,
+                                  "rate"
+                                )
+                              }
                             />
                           </td>
                           <td className={classes}>
@@ -112,6 +258,15 @@ const SectionsBlock: React.FC<SectionsBlockProps> = ({
                               type="text"
                               className="w-full h-full py-2 px-1 focus:outline-none text-sm"
                               placeholder="Amount"
+                              value={`${contents.amount}`}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  e,
+                                  section._id,
+                                  contents._id,
+                                  "amount"
+                                )
+                              }
                             />
                           </td>
                           <td className={classes}>
@@ -151,7 +306,7 @@ const SectionsBlock: React.FC<SectionsBlockProps> = ({
             </div>
           </div>
 
-          {index < sectionContents.length - 1 ? (
+          {index < sectionsData.length - 1 ? (
             <div className="lg:w-3/4 border"></div>
           ) : null}
         </>
