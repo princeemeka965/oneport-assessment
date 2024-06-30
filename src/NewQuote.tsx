@@ -3,14 +3,41 @@ import { ChevronLeft, EyeIcon } from "./components/SvgIcons";
 import TimeRangePicker from "@wojtekmaj/react-timerange-picker";
 import "@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css";
 import "react-clock/dist/Clock.css";
+import { useNavigate } from "react-router-dom";
 
 function NewQuote() {
+  const navigate = useNavigate();
+
+  let sectionsData: {}[];
+
+  sectionsData = [
+    {
+      _id: "666e58e5acf1e952ba513199",
+      section_name: "ORIGIN HANDLING CHARGES",
+      section_number: 1,
+      section_currency: "NGN",
+      section_data: [
+        {
+          _id: "666e58e5acf1e952ba51319a",
+          basis: "Basis 1",
+          unit_of_measurement: "Kilogram",
+          unit: 10,
+          rate: 5,
+          amount: 50,
+        },
+      ],
+    },
+  ];
+
   return (
     <>
       <header className="w-full flex lg:p-9 md:p-9 py-6 px-4 bg-lightGray">
-        <div className="w-full flex justify-between items-center">
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-1 text-xs">
+        <div className="w-full flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
+          <div className="flex flex-col lg:gap-2 gap-4">
+            <div
+              className="flex gap-1 text-xs cursor-pointer"
+              onClick={() => navigate("/")}
+            >
               <ChevronLeft />
               <p className="text-romanSilver">Back to quotes</p>
             </div>
@@ -29,13 +56,13 @@ function NewQuote() {
           <div className="flex gap-3">
             <button
               type="button"
-              className="py-2 px-4 flex justify-center rounded-md bg-white text-romanSilver text-sm"
+              className="py-2 px-4 flex justify-center rounded-md bg-white text-romanSilver text-[13px] lg:text-sm"
             >
               Save as draft
             </button>
             <button
               type="button"
-              className="py-2 px-4 flex justify-center gap-2 rounded-md bg-lightGreen text-sm"
+              className="py-2 px-4 flex justify-center gap-2 rounded-md bg-lightGreen text-[13px] lg:text-sm"
               style={{ color: "#005C00" }}
             >
               <span className="flex flex-col pt-[2px] justify-center">
@@ -48,18 +75,18 @@ function NewQuote() {
       </header>
 
       <div className="my-10 flex flex-col w-full lg:px-9 md:px-9 px-4">
-        <div className="w-full flex py-3 px-5 bg-maniacGray rounded-t-md">
-          <div className="flex gap-2">
+        <div className="w-full flex py-3 lg:px-5 px-3 bg-maniacGray rounded-t-md">
+          <div className="flex lg:flex-row md:flex-row flex-col gap-2">
             <p className="text-xs text-darkCrayola font-[500] flex flex-col justify-center">
               Change Quote Time
             </p>
-            <div className="w-max py-1 px-3 border flex gap-3 rounded-full">
+            <div className="w-max py-1 px-3 border flex lg:gap-3 gap-2 lg:-ml-0 -ml-1 rounded-full">
               <p className="text-xs text-darkGreen flex flex-col justify-center">
                 Sat 7th, May 2024
               </p>
-              <div className="flex">
+              <div className="flex border-0">
                 <TimeRangePicker
-                  className={"text-xs text-gray-500"}
+                  className={"text-xs text-gray-500 border-0"}
                   clearIcon={null}
                   clockIcon={null}
                   value={["22:15:00", "23:45:00"]}
@@ -68,6 +95,9 @@ function NewQuote() {
             </div>
           </div>
         </div>
+        {/**
+         * Sections Block comes in here
+         */}
       </div>
     </>
   );
