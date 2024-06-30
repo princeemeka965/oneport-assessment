@@ -1,6 +1,16 @@
 import * as React from "react";
 import { Card } from "@material-tailwind/react";
-import { TrashIcon, USAIcon } from "./SvgIcons";
+import {
+  ArrowLeft,
+  ArrowRight,
+  NigeriaIcon,
+  TrashIcon,
+  USAIcon,
+} from "./SvgIcons";
+
+interface ChildComponentProps {
+  openCurrency: (data: Boolean) => void;
+}
 
 interface SectionDataProps {
   _id: String;
@@ -31,7 +41,7 @@ sections = [
   },
 ];
 
-const SectionsBlock: React.FC = () => {
+const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
   const [sectionsData, setSectionsData] = React.useState<any>(sections);
 
   let TABLE_HEAD: String[] = [
@@ -184,12 +194,19 @@ const SectionsBlock: React.FC = () => {
     setSectionsData(updatedSections);
   };
 
+  const openCurrencyModal = () => {
+    openCurrency(true);
+  };
+
   return (
     <>
       {sectionsData.map((section: SectionDataProps, index: number) => (
         <>
-          <div className="w-full flex gap-12 mb-7" key={index}>
-            <div className="flex flex-col lg:w-3/4 md:w-3/4 w-full">
+          <div
+            className="w-full flex lg:flex-row md:flex-row flex-col gap-12 lg:mb-0 md:mb-0 mb-7"
+            key={index}
+          >
+            <div className="flex flex-col lg:w-3/4 md:w-3/4 w-full h-full">
               <div className="w-full flex justify-between">
                 <div className="flex w-max">
                   <input
@@ -352,8 +369,8 @@ const SectionsBlock: React.FC = () => {
             {/**
              * SECTION CURRENCY BLOCK DESIGN
              */}
-            <div className="lg:flex md:flex hidden my-7 flex-col">
-              <Card className="p-2 max-w-md shadow-none rounded-md border">
+            <div className="flex lg:mt-7 md:mt-7 -my-8 flex-col">
+              <Card className="p-2 max-w-md shadow-none flex flex-col gap-2 rounded-md border">
                 <div className="py-3 px-2 flex justify-between gap-32">
                   <p className="text-[15px] font-[500] text-shinyBlack">
                     Section Currency
@@ -361,6 +378,40 @@ const SectionsBlock: React.FC = () => {
                   <div className="flex flex-col w-[20px] justify-center">
                     <USAIcon />
                   </div>
+                </div>
+                <div className="w-full border" />
+                <div className="flex flex-col gap-3 px-2 w-full my-3">
+                  <p className="text-sm text-romanSilver">Currency & Rate</p>
+                  <div className="flex w-full justify-between gap-2">
+                    <div className="border p-2 flex rounded-md justify-center">
+                      <span className="flex flex-col w-[20px] justify-center">
+                        <USAIcon />
+                      </span>
+                    </div>
+                    <div className="flex flex-col py-2">
+                      <span className="w-[13px]">
+                        <ArrowRight />
+                      </span>
+                      <span className="w-[13px] -my-2">
+                        <ArrowLeft />
+                      </span>
+                    </div>
+                    <div className="border w-full p-2 gap-2 rounded-md flex">
+                      <span className="flex flex-col w-[20px] justify-center">
+                        <NigeriaIcon />
+                      </span>
+                      <p className="text-sm font-[500]">&#8358;1,119.53</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bottom-2 justify-center flex mb-3 px-2 w-full">
+                  <button
+                    className="py-2 px-4 w-full flex justify-center rounded-md bg-lightGray border text-[13px] lg:text-sm"
+                    onClick={() => openCurrencyModal()}
+                  >
+                    Edit section currency
+                  </button>
                 </div>
               </Card>
             </div>
