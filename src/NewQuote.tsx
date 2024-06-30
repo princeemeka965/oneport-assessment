@@ -1,4 +1,3 @@
-import * as React from "react";
 import { ChevronLeft, EyeIcon } from "./components/SvgIcons";
 import TimeRangePicker from "@wojtekmaj/react-timerange-picker";
 import "@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css";
@@ -6,44 +5,8 @@ import "react-clock/dist/Clock.css";
 import { useNavigate } from "react-router-dom";
 import SectionsBlock from "./components/SectionsBlock";
 
-interface SectionDataProps {
-  _id: String;
-  section_name: String;
-  section_number: Number;
-  section_currency: String;
-  section_data: {}[];
-}
-
 function NewQuote() {
   const navigate = useNavigate();
-
-  let sectionsData: SectionDataProps[];
-
-  sectionsData = [
-    {
-      _id: "666e58e5acf1e952ba513199",
-      section_name: "ORIGIN HANDLING CHARGES",
-      section_number: 1,
-      section_currency: "NGN",
-      section_data: [
-        {
-          _id: "666e58e5acf1e952ba51319a",
-          basis: "Basis 1",
-          unit_of_measurement: "Kilogram",
-          unit: 10,
-          rate: 5,
-          amount: 50,
-        },
-      ],
-    },
-  ];
-
-  const addMoreBasis = (data: any) => {
-    const filteredSection = sectionsData.filter(
-      (content) => content._id === data
-    );
-    console.log(filteredSection);
-  };
 
   return (
     <>
@@ -115,10 +78,7 @@ function NewQuote() {
          * Sections Block comes in here
          */}
         <div className="flex flex-col gap-10">
-          <SectionsBlock
-            sectionContents={sectionsData}
-            addBasis={addMoreBasis}
-          />
+          <SectionsBlock />
         </div>
       </div>
     </>
