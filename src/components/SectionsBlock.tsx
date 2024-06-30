@@ -31,7 +31,7 @@ sections = [
   },
 ];
 
-const SectionsBlock: React.FC = ({}) => {
+const SectionsBlock: React.FC = () => {
   const [sectionsData, setSectionsData] = React.useState<any>(sections);
 
   let TABLE_HEAD: String[] = [
@@ -151,12 +151,37 @@ const SectionsBlock: React.FC = ({}) => {
     ]);
   };
 
+  /**
+   *
+   * @param data
+   * Function to remove section
+   * where data is id of selected section
+   */
   const removeSection = (data: any) => {
     // get sections aside from the removed one
     const filteredSection = sectionsData.filter(
       (section: SectionDataProps) => section._id !== data
     );
     setSectionsData(filteredSection);
+  };
+
+  /**
+   *
+   * @param contentsId
+   * Function to remove Section row
+   * where contentsId is the id of the row to be remove
+   */
+  const deleteBasis = (contentsId: any) => {
+    const updatedSections = sectionsData.map((section: any) => {
+      return {
+        ...section,
+        section_data: section.section_data.filter(
+          (item: any) => item._id !== contentsId
+        ),
+      };
+    });
+
+    setSectionsData(updatedSections);
   };
 
   return (
@@ -299,7 +324,10 @@ const SectionsBlock: React.FC = ({}) => {
                             />
                           </td>
                           <td className={classes}>
-                            <TrashIcon className="text-desire" />
+                            <TrashIcon
+                              className="text-desire cursor-pointer"
+                              onClick={() => deleteBasis(contents._id)}
+                            />
                           </td>
                         </tr>
                       );
