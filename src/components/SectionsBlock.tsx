@@ -388,6 +388,21 @@ const SectionsBlock: React.FC = () => {
           </div>
         </button>
       </div>
+
+      <div className="lg:w-3/4 md:w-3/4 w-full flex justify-between mb-10">
+        <button
+          type="button"
+          className="py-2 px-4 flex justify-center rounded-md bg-lightGray border text-desire text-[13px] lg:text-sm"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="py-2 px-4 flex justify-center rounded-md bg-darkGreen border-2 text-white text-[13px] lg:text-sm"
+        >
+          Save Quote
+        </button>
+      </div>
     </>
   );
 };
