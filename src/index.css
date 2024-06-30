@@ -54,3 +54,12 @@ body,
 button {
   border: 1px solid #f3f4f6;
 }
+
+.react-timerange-picker__inputGroup input,
+.react-timerange-picker__inputGroup select {
+  outline: none !important;
+}
+
+.react-timerange-picker__inputGroup select {
+  margin-left: 0px !important;
+}

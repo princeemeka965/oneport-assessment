@@ -1,5 +1,8 @@
 import * as React from "react";
 import { ChevronLeft, EyeIcon } from "./components/SvgIcons";
+import TimeRangePicker from "@wojtekmaj/react-timerange-picker";
+import "@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css";
+import "react-clock/dist/Clock.css";
 
 function NewQuote() {
   return (
@@ -51,7 +54,17 @@ function NewQuote() {
               Change Quote Time
             </p>
             <div className="w-max py-1 px-3 border flex gap-3 rounded-full">
-              <p className="text-xs text-darkGreen">Sat 7th, May 2024</p>
+              <p className="text-xs text-darkGreen flex flex-col justify-center">
+                Sat 7th, May 2024
+              </p>
+              <div className="flex">
+                <TimeRangePicker
+                  className={"text-xs text-gray-500"}
+                  clearIcon={null}
+                  clockIcon={null}
+                  value={["22:15:00", "23:45:00"]}
+                />
+              </div>
             </div>
           </div>
         </div>
