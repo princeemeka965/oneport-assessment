@@ -29,23 +29,6 @@ sections = [
       },
     ],
   },
-
-  {
-    _id: "666e5367Facf1e952ba513199",
-    section_name: "ORIGIN HANDLING CHARGES",
-    section_number: 1,
-    section_currency: "NGN",
-    section_data: [
-      {
-        _id: "666e58e5asdferte952ba51319a",
-        basis: "Basis 1",
-        unit_of_measurement: "Kilogram",
-        unit: 10,
-        rate: 5,
-        amount: 50,
-      },
-    ],
-  },
 ];
 
 const SectionsBlock: React.FC = ({}) => {
@@ -142,6 +125,34 @@ const SectionsBlock: React.FC = ({}) => {
     );
   };
 
+  /**
+   * Function to add more sections to the Block
+   */
+  const addMoreSections = () => {
+    const newSections = {
+      _id: Math.random(),
+      section_name: "",
+      section_number: 1,
+      section_currency: "NGN",
+      section_data: [
+        {
+          _id: Math.random(),
+          basis: "",
+          unit_of_measurement: "",
+          unit: 0,
+          rate: 0,
+          amount: 0,
+        },
+      ],
+    };
+    setSectionsData((prevSectionsData: any) => [
+      ...prevSectionsData,
+      newSections,
+    ]);
+  };
+
+  console.log(sectionsData);
+
   return (
     <>
       {sectionsData.map((section: SectionDataProps, index: number) => (
@@ -152,9 +163,12 @@ const SectionsBlock: React.FC = ({}) => {
                 <div className="flex w-max">
                   <input
                     type="text"
-                    className="w-full h-full py-6 px-3 focus:border focus:outline-none focus:border-boltGreen text-sm"
+                    className={`w-full h-full py-6 lg:px-3 md:px-3 px-1 focus:outline-none ${
+                      section.section_name === ""
+                        ? "border-boltGreen border"
+                        : ""
+                    } text-sm`}
                     placeholder="Enter Section Label"
-                    autoFocus
                     value={`${section.section_name}`}
                   />
                 </div>
@@ -170,7 +184,7 @@ const SectionsBlock: React.FC = ({}) => {
                 ) : null}
               </div>
               <Card className="h-full w-full overflow-auto rounded-none">
-                <table className="lg:w-full md:w-full w-[800px] table-auto text-left">
+                <table className="lg:w-full md:w-full w-[900px] table-auto text-left">
                   <thead>
                     <tr>
                       {TABLE_HEAD.map((head, index) => (
@@ -210,16 +224,22 @@ const SectionsBlock: React.FC = ({}) => {
                             />
                           </td>
                           <td className={classes}>
-                            <select
-                              className="w-full h-full py-2 px-1 bg-white focus:outline-none text-sm"
-                              value={`${contents.unit_of_measurement}`}
-                              onChange={(e) =>
-                                changeMeasurement(e, section._id, contents._id)
-                              }
-                            >
-                              <option value={"Kilogram"}>Per Kilogram</option>
-                              <option value={"Gram"}>Per Gram</option>
-                            </select>
+                            <div className="lg:w-[200px] w-[160px]">
+                              <select
+                                className="h-full py-2 px-1 bg-white focus:outline-none text-sm"
+                                value={`${contents.unit_of_measurement}`}
+                                onChange={(e) =>
+                                  changeMeasurement(
+                                    e,
+                                    section._id,
+                                    contents._id
+                                  )
+                                }
+                              >
+                                <option value={"Kilogram"}>Per Kilogram</option>
+                                <option value={"Gram"}>Per Gram</option>
+                              </select>
+                            </div>
                           </td>
                           <td className={classes}>
                             <input
@@ -292,7 +312,10 @@ const SectionsBlock: React.FC = ({}) => {
                 </table>
               </Card>
             </div>
-            <div className="lg:flex md:flex hidden my-5 flex-col">
+            {/**
+             * SECTION CURRENCY BLOCK DESIGN
+             */}
+            <div className="lg:flex md:flex hidden my-7 flex-col">
               <Card className="p-2 max-w-md shadow-none rounded-md border">
                 <div className="py-3 px-2 flex justify-between gap-32">
                   <p className="text-[15px] font-[500] text-shinyBlack">
@@ -311,6 +334,23 @@ const SectionsBlock: React.FC = ({}) => {
           ) : null}
         </>
       ))}
+
+      <div className="lg:w-3/4 md:w-3/4 w-full flex mb-10">
+        <button
+          type="submit"
+          className="p-4 w-full bg-lightGreen flex gap-2 justify-center"
+          onClick={() => addMoreSections()}
+        >
+          <div className="flex flex-col justify-center mt-[1.5px]">
+            <div className="bg-darkGreen px-1 rounded-sm text-xs text-white">
+              &#43;
+            </div>
+          </div>
+          <div className="flex flex-col justify-center">
+            <p className="text-sm text-shinyGreen">Add new Section</p>
+          </div>
+        </button>
+      </div>
     </>
   );
 };

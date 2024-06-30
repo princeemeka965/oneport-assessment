@@ -35,13 +35,13 @@ function NewQuote() {
           <div className="flex w-full lg:w-max md:w-max justify-center gap-3">
             <button
               type="button"
-              className="py-2 px-4 flex justify-center rounded-md bg-white text-romanSilver text-[13px] lg:text-sm"
+              className="py-2 px-4 flex justify-center rounded-md bg-white border-2 text-romanSilver text-[13px] lg:text-sm"
             >
               Save as draft
             </button>
             <button
               type="button"
-              className="py-2 px-4 flex justify-center gap-2 rounded-md bg-lightGreen text-[13px] lg:text-sm"
+              className="py-2 px-4 flex justify-center gap-2 rounded-md border-2 bg-lightGreen text-[13px] lg:text-sm"
               style={{ color: "#005C00" }}
             >
               <span className="flex flex-col pt-[2px] justify-center">
@@ -53,13 +53,13 @@ function NewQuote() {
         </div>
       </header>
 
-      <div className="my-10 flex flex-col w-full lg:px-9 md:px-9 px-4">
+      <div className="my-10 flex flex-col w-full lg:px-9 md:px-9 px-3">
         <div className="lg:w-3/4 md:w-3/4 w-full flex py-3 lg:px-5 px-3 bg-maniacGray rounded-t-md">
           <div className="flex lg:flex-row md:flex-row flex-col gap-2">
             <p className="text-xs text-darkCrayola font-[500] flex flex-col justify-center">
               Change Quote Time
             </p>
-            <div className="w-max py-1 px-3 border flex lg:gap-3 gap-2 lg:-ml-0 -ml-1 rounded-full">
+            <div className="w-max py-1 px-3 border-2 lg:border md:border flex lg:gap-3 gap-2 lg:-ml-0 -ml-2 rounded-full">
               <p className="text-xs text-darkGreen flex flex-col justify-center">
                 Sat 7th, May 2024
               </p>
@@ -77,7 +77,7 @@ function NewQuote() {
         {/**
          * Sections Block comes in here
          */}
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-10 lg:my-0 md:my-0 my-4">
           <SectionsBlock />
         </div>
       </div>
