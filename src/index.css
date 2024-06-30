@@ -61,7 +61,6 @@ button {
 }
 
 .react-time-picker__inputGroup__divider {
-  display: none !important;
 }
 
 .react-timerange-picker__inputGroup input,

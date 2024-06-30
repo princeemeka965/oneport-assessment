@@ -4,11 +4,20 @@ import TimeRangePicker from "@wojtekmaj/react-timerange-picker";
 import "@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css";
 import "react-clock/dist/Clock.css";
 import { useNavigate } from "react-router-dom";
+import SectionsBlock from "./components/SectionsBlock";
+
+interface SectionDataProps {
+  _id: String;
+  section_name: String;
+  section_number: Number;
+  section_currency: String;
+  section_data: {}[];
+}
 
 function NewQuote() {
   const navigate = useNavigate();
 
-  let sectionsData: {}[];
+  let sectionsData: SectionDataProps[];
 
   sectionsData = [
     {
@@ -28,6 +37,13 @@ function NewQuote() {
       ],
     },
   ];
+
+  const addMoreBasis = (data: any) => {
+    const filteredSection = sectionsData.filter(
+      (content) => content._id === data
+    );
+    console.log(filteredSection);
+  };
 
   return (
     <>
@@ -53,7 +69,7 @@ function NewQuote() {
               </p>
             </div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex w-full lg:w-max md:w-max justify-center gap-3">
             <button
               type="button"
               className="py-2 px-4 flex justify-center rounded-md bg-white text-romanSilver text-[13px] lg:text-sm"
@@ -75,7 +91,7 @@ function NewQuote() {
       </header>
 
       <div className="my-10 flex flex-col w-full lg:px-9 md:px-9 px-4">
-        <div className="w-full flex py-3 lg:px-5 px-3 bg-maniacGray rounded-t-md">
+        <div className="lg:w-3/4 md:w-3/4 w-full flex py-3 lg:px-5 px-3 bg-maniacGray rounded-t-md">
           <div className="flex lg:flex-row md:flex-row flex-col gap-2">
             <p className="text-xs text-darkCrayola font-[500] flex flex-col justify-center">
               Change Quote Time
@@ -98,6 +114,12 @@ function NewQuote() {
         {/**
          * Sections Block comes in here
          */}
+        <div className="flex flex-col gap-10">
+          <SectionsBlock
+            sectionContents={sectionsData}
+            addBasis={addMoreBasis}
+          />
+        </div>
       </div>
     </>
   );

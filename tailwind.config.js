@@ -2,7 +2,7 @@
 const withMT = require("@material-tailwind/react/utils/withMT");
 
 module.exports = withMT({
-  content: ["./src/**/*.{html,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -21,7 +21,8 @@ module.exports = withMT({
         seaGreen: "#0618028C",
         lightGreen: "#37B24833",
         lightGray: "#FAFAFA",
-        maniacGray: "#F9FAFB"
+        maniacGray: "#F9FAFB",
+        boltGreen: "#139C33"
       }
     },
   },
