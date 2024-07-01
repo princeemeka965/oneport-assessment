@@ -7,6 +7,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import NewQuote from "./NewQuote";
 import { ThemeProvider } from "@material-tailwind/react";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +27,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>
 );
