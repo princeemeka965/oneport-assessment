@@ -1,12 +1,19 @@
+import React from "react";
 import { ChevronLeft, EyeIcon } from "./components/SvgIcons";
 import TimeRangePicker from "@wojtekmaj/react-timerange-picker";
 import "@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css";
 import "react-clock/dist/Clock.css";
 import { useNavigate } from "react-router-dom";
 import SectionsBlock from "./components/SectionsBlock";
+import SetCurrencyModal from "./components/SetCurrencyModal";
 
 function NewQuote() {
   const navigate = useNavigate();
+  const [openModal, setOpen] = React.useState<Boolean>(false);
+
+  const handleCurrencyModal = (data: Boolean) => {
+    setOpen(data);
+  };
 
   return (
     <>
@@ -78,8 +85,13 @@ function NewQuote() {
          * Sections Block comes in here
          */}
         <div className="flex flex-col gap-10 lg:my-0 md:my-0 my-4">
-          <SectionsBlock />
+          <SectionsBlock openCurrency={handleCurrencyModal} />
         </div>
+
+        {/**
+         * Set Currency Modal
+         */}
+        <SetCurrencyModal isOpen={openModal} onClose={() => setOpen(false)} />
       </div>
     </>
   );

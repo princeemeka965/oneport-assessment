@@ -51,10 +51,6 @@ body,
   transform: translateX(100%);
 }
 
-button {
-  border: 1px solid #f3f4f6;
-}
-
 .react-timerange-picker__wrapper {
   border: 0px !important;
   gap: 8px !important;

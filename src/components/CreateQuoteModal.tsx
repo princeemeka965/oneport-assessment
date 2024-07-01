@@ -17,24 +17,13 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <Modal onClose={onClose}>
+    <Modal
+      onClose={onClose}
+      title="Create New Quote"
+      subtitle="Enter quote name and time"
+    >
       {() => (
         <>
-          <div className="flex justify-between items-center pt-5 pb-3 px-6">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-base font-semibold">Create New Quote</h2>
-              <h6 className="text-xs text-romanSilver">
-                Enter quote name and time
-              </h6>
-            </div>
-            <button
-              onClick={onClose}
-              className="text-gray-600 text-lg hover:text-gray-900"
-            >
-              &times;
-            </button>
-          </div>
-          <div className="w-full border" />
           <form className="p-6">
             <div className="mb-8">
               <label className="block text-xs mb-2">Enter Quote Title</label>
@@ -64,6 +53,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 />
               </div>
             </div>
+            <div className="w-full border" />
             <div className="flex flex-col gap-3 mt-8">
               <button
                 type="button"
