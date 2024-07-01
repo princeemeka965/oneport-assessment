@@ -50,6 +50,9 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
                       "flex items-center opacity-100 px-0 gap-2 pointer-events-none",
                   })
                 }
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
               >
                 {countries.map((country: any) => (
                   <Option
@@ -84,6 +87,8 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
                     color="green"
                     checked={isBaseCurrency}
                     onChange={() => setIsBaseCurrency(true)}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
                   />
                   <span className="text-sm">Yes, it is.</span>
                 </label>
@@ -94,6 +99,8 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
                     checked={!isBaseCurrency}
                     onChange={() => setIsBaseCurrency(false)}
                     className="focus:outline-none"
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
                   />
                   <span className="text-sm">No</span>
                 </label>
@@ -122,6 +129,9 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
                     })
                   }
                   value={"NGN"}
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
                 >
                   {countries.map((country: any) => (
                     <Option

@@ -234,7 +234,12 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
                   </div>
                 ) : null}
               </div>
-              <Card className="h-full w-full overflow-auto rounded-none">
+              <Card
+                className="h-full w-full overflow-auto rounded-none"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
                 <table className="lg:w-full md:w-full w-[900px] table-auto text-left">
                   <thead>
                     <tr>
@@ -370,7 +375,12 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
              * SECTION CURRENCY BLOCK DESIGN
              */}
             <div className="flex lg:mt-7 md:mt-7 -my-8 flex-col">
-              <Card className="p-2 max-w-md shadow-none flex flex-col gap-2 rounded-md border">
+              <Card
+                className="p-2 max-w-md shadow-none flex flex-col gap-2 rounded-md border"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
                 <div className="py-3 px-2 flex justify-between gap-32">
                   <p className="text-[15px] font-[500] text-shinyBlack">
                     Section Currency
