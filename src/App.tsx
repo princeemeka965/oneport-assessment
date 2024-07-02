@@ -6,12 +6,11 @@ import CreateQuoteModal from "./components/CreateQuoteModal";
 function App() {
   const [open, setOpen] = React.useState<Boolean>(false);
   const [openQuote, setOpenQuote] = React.useState<Boolean>(false);
+  const [singleQuote, setSingleQuote] = React.useState<{}[]>([]);
 
-  const handleOpenDrawer = (data: {
-    selectedDate: String;
-    openModal: Boolean;
-  }) => {
+  const handleOpenDrawer = (data: { quoteObj: any; openModal: Boolean }) => {
     setOpen(data.openModal);
+    setSingleQuote(data.quoteObj);
   };
 
   const handleOpenQuote = (data: Boolean) => {
@@ -22,7 +21,12 @@ function App() {
     <>
       <div className="w-full flex flex-col p-3">
         <Calendar openDrawer={handleOpenDrawer} />
-        <SideBar sideBarOpen={open} openQuote={handleOpenQuote} />
+        <SideBar
+          onClose={() => setOpen(false)}
+          sideBarOpen={open}
+          quoteData={singleQuote}
+          openQuote={handleOpenQuote}
+        />
         <CreateQuoteModal
           isOpen={openQuote}
           onClose={() => setOpenQuote(false)}

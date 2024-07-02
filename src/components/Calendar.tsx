@@ -9,6 +9,7 @@ interface ChildComponentProps {
 }
 
 interface QuoteSummary {
+  quoteObj: {}[];
   quoteCount: number;
   totalAmount: number;
 }
@@ -81,31 +82,43 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
       return {
         quoteCount: 0,
         totalAmount: 0,
+        quoteObj: [],
       };
 
     // If there is quote data, find the quotes for that day
-    const quoteForDate = quotesData.find(
-      (quote: any) => quote.quote_date === paramsDatetoISOString
+    const quoteForDate = quotesData.filter(
+      (quote: any) =>
+        quote.quote_date.split("T")[0] === paramsDatetoISOString.split("T")[0]
     );
 
-    // If there is no quote for that date
-    if (!quoteForDate)
+    // If there is no quote for that day
+    if (quoteForDate.length === 0)
       return {
         quoteCount: 0,
         totalAmount: 0,
+        quoteObj: [],
       };
 
-    const quoteCount = quoteForDate.sections.length;
-    const totalAmount = quoteForDate.sections.reduce(
-      (sum: any, section: { section_data: any[] }) =>
-        sum +
-        section.section_data.reduce(
-          (sectionSum: any, data: { amount: any }) => sectionSum + data.amount,
-          0
-        ),
-      0
-    );
-    return { quoteCount, totalAmount };
+    // If there is quote for that day
+    const quoteCount = quoteForDate.length;
+    const totalAmount = quoteForDate.reduce((total: number, quote: any) => {
+      const sectionTotal = quote.sections.reduce(
+        (sectionSum: any, section: any) => {
+          const sectionDataTotal = section.section_data.reduce(
+            (dataSum: number, data: { amount: number }) => {
+              return dataSum + data.amount;
+            },
+            0
+          );
+          return sectionSum + sectionDataTotal;
+        },
+        0
+      );
+      return total + sectionTotal;
+    }, 0);
+
+    const quoteObj = quoteForDate;
+    return { quoteCount, totalAmount, quoteObj };
   };
 
   const currentMonth = new Date().getMonth(); // get the current Month
@@ -132,7 +145,7 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
       <td
         key={day}
         onClick={() => {
-          getWeekDetails(quote);
+          getWeekDetails(quote?.quoteObj);
           setClickedDay(day);
         }}
         className={clickedDay === day ? "bg-darkActive" : ""}
@@ -161,11 +174,13 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
   }
 
   const getWeekDetails = (data: any) => {
-    const propsObj: { quoteObj: any; openModal: Boolean } = {
-      quoteObj: data,
-      openModal: true,
-    };
-    openDrawer(propsObj);
+    if (data.length > 0) {
+      const propsObj: { quoteObj: any; openModal: Boolean } = {
+        quoteObj: data,
+        openModal: true,
+      };
+      openDrawer(propsObj);
+    }
   };
 
   const getMonthsValue = (data: string): string => {
@@ -182,6 +197,8 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
    * This means after 31 december 2024, the Calendar navigates back to 2022 January
    */
   const navigateCalendar = (slug: String) => {
+    setClickedDay(0);
+    openDrawer({ quoteObj: null, openModal: false });
     switch (slug) {
       case "back":
         if (year > 2022) {
