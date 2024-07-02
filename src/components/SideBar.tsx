@@ -1,11 +1,15 @@
 import React from "react";
 import { Sun } from "./SvgIcons";
-import { convertToLocaleTime } from "../helpers/timeFormat";
+import {
+  convertToLocaleTime,
+  formatISODate,
+  getDayName,
+} from "../helpers/timeFormat";
 
 interface ChildComponentProps {
   onClose: () => void;
   sideBarOpen: Boolean;
-  quoteData: {}[];
+  quoteData: any;
   openQuote: (data: Boolean) => void;
 }
 
@@ -31,8 +35,6 @@ const SideBar: React.FC<ChildComponentProps> = ({
     return sectionTotal.toLocaleString();
   };
 
-  console.log(quoteData);
-
   return (
     <>
       <div
@@ -56,9 +58,11 @@ const SideBar: React.FC<ChildComponentProps> = ({
           <div className="flex justify-between w-full">
             <div className="flex gap-1">
               <p className="text-[13px] uppercase font-bold text-blueFold">
-                Today
+                {getDayName(quoteData[0]?.quote_date)}
               </p>
-              <p className="text-[13px] text-blueFold">2/5/2024</p>
+              <p className="text-[13px] text-blueFold">
+                {formatISODate(quoteData[0]?.quote_date)}
+              </p>
             </div>
             <div className="flex justify-end">
               <p className="text-[13px] font-bold">55º</p>

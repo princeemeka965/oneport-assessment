@@ -23,3 +23,38 @@ export function checkCurrentDate(day: number, month: number, year: number) {
 
   return formattedCurrentDate === date;
 }
+
+export function formatISODate(isoDate: any) {
+  // Parse the ISO date string into a Date object
+  const date = new Date(isoDate);
+
+  // Get day, month, and year from the Date object
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1; // Months are zero-indexed
+  const year = date.getUTCFullYear();
+
+  // Return the formatted date string
+  return `${day}/${month}/${year}`;
+}
+
+export function getDayName(isoDate: any) {
+  // Parse the ISO date string into a Date object
+  const date = new Date(isoDate);
+
+  // Array of day names
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  // Get the day of the week (0-6) using UTC time
+  const dayIndex = date.getUTCDay();
+
+  // Return the corresponding day name
+  return days[dayIndex];
+}
