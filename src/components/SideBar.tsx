@@ -1,43 +1,54 @@
-import * as React from "react";
+import React from "react";
 import { Sun } from "./SvgIcons";
+import { convertToLocaleTime } from "../helpers/timeFormat";
 
 interface ChildComponentProps {
+  onClose: () => void;
   sideBarOpen: Boolean;
+  quoteData: {}[];
   openQuote: (data: Boolean) => void;
 }
 
-interface SideContent {
-  id: Number;
-  amount: String;
-  text: String;
-}
+const SideBar: React.FC<ChildComponentProps> = ({
+  onClose,
+  sideBarOpen,
+  quoteData,
+  openQuote,
+}) => {
+  const getQuoteAmount = (quoteSections: {}[]): String => {
+    const sectionTotal = quoteSections.reduce(
+      (sectionSum: any, section: any) => {
+        const sectionDataTotal = section.section_data.reduce(
+          (dataSum: number, data: { amount: number }) => {
+            return dataSum + data.amount;
+          },
+          0
+        );
+        return sectionSum + sectionDataTotal;
+      },
+      0
+    );
+    return sectionTotal.toLocaleString();
+  };
 
-const sideContentData: SideContent[] = [
-  {
-    id: 1,
-    amount: "$2,450.00",
-    text: "Ocean Freight/Haulage/CBT",
-  },
-  {
-    id: 2,
-    amount: "$2,450.00",
-    text: "Air Freight/ Ocean Freight/ CBT/ Haulage",
-  },
-  {
-    id: 3,
-    amount: "$2,450.00",
-    text: "Air Freight/ Ocean Freight/ CBT/ Haulage",
-  },
-];
+  console.log(quoteData);
 
-const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen, openQuote }) => {
   return (
     <>
       <div
-        className={`sidebar right-0 h-full fixed bg-darkActive lg:w-[300px] md:w-[300px] w-full lg:top-[5.8rem] top-0 ${
+        className={`sidebar right-0 h-full fixed bg-darkActive overflow-y-auto lg:w-[300px] md:w-[300px] w-full lg:top-[5.8rem] top-0 ${
           sideBarOpen ? "open" : "closed"
         }`}
       >
+        <div className="w-full flex justify-end" style={{ marginTop: "auto" }}>
+          <button
+            className="border-blueFold w-auto mx-2 flex cursor-pointer text-white"
+            onClick={onClose}
+          >
+            &times;
+          </button>
+        </div>
+
         <div className="w-full flex p-5 flex-col justify-between gap-2">
           {/**
            * Side Bar Header
@@ -60,8 +71,8 @@ const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen, openQuote }) => {
           {/**
            * Side Bar Contents
            */}
-          <div className="flex w-full flex-col gap-6 my-3">
-            {sideContentData.map((contentData, index) => (
+          <div className="flex w-full flex-col gap-6 my-4">
+            {quoteData?.map((contentData: any, index: number) => (
               <div
                 className="w-full flex hover:bg-lightFur group cursor-pointer"
                 key={index}
@@ -70,11 +81,18 @@ const SideBar: React.FC<ChildComponentProps> = ({ sideBarOpen, openQuote }) => {
                 <div className="w-full flex flex-col h-full py-1 px-2">
                   <div className="w-full flex justify-between">
                     <p className="text-xs text-lightFur group-hover:text-blueFold">
-                      {contentData.amount}
+                      ${getQuoteAmount(contentData?.sections)}
                     </p>
+                    <span className="px-2 rounded-sm flex bg-darkCrayola">
+                      <p className="text-xs text-lightFur">
+                        {convertToLocaleTime(contentData?.quote_date)}
+                      </p>
+                    </span>
                   </div>
                   <div className="w-full flex mt-3">
-                    <p className="text-blueFold text-xs">{contentData.text}</p>
+                    <p className="text-blueFold text-xs">
+                      {contentData?.quote_title}
+                    </p>
                   </div>
                 </div>
               </div>
