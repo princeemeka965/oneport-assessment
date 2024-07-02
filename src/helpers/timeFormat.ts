@@ -10,3 +10,16 @@ export function convertToLocaleTime(dateISO: any) {
   let timeString = date.toLocaleTimeString("en-US", options);
   return timeString;
 }
+
+export function checkCurrentDate(day: number, month: number, year: number) {
+  const date = `${day}-${month + 1}-${year}`;
+
+  const currentDay = new Date().getDate();
+  const currentMonth = new Date().getMonth() + 1;
+  const currentYear = new Date().getFullYear();
+
+  // Return the formatted date string
+  const formattedCurrentDate = `${currentDay}-${currentMonth}-${currentYear}`;
+
+  return formattedCurrentDate === date;
+}

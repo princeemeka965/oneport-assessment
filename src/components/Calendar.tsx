@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChevronLeft, ChevronRight } from "./SvgIcons";
 import { getQuoteDataRequest } from "../store/actions";
-import { convertToISOString } from "../helpers/timeFormat";
+import { checkCurrentDate, convertToISOString } from "../helpers/timeFormat";
 
 interface ChildComponentProps {
   openDrawer: (data: { quoteObj: any; openModal: Boolean }) => void;
@@ -152,7 +152,7 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
       >
         <div
           className={`${
-            currentDay === day
+            checkCurrentDate(day, month, year)
               ? "px-2 rounded-md bg-shinyBlue w-max text-base text-white"
               : "text-shinyGrey px-1 text-base"
           }`}
