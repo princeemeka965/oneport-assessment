@@ -17,6 +17,8 @@ const rootReducer = (state = initialState, action: any) => {
       return { ...state, quotePayload: action.payload, error: null };
     case "POST_QUOTE_DATA_FAILURE":
       return { ...state, quotePayload: null, error: action.payload };
+    case "SAVE_PAYLOAD_SCHEMA":
+      return { ...state, quotePayload: action.payload };
     default:
       return state;
   }

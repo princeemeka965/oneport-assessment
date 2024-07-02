@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Modal from "./Modal";
+import { savePayloadSchema } from "../store/actions";
 
 interface ModalProps {
   isOpen: Boolean;
@@ -8,9 +10,28 @@ interface ModalProps {
 }
 
 const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const [quoteTitle, setQuoteTitle] = useState<String>("");
+  const [startTime, setStartTime] = useState<any>(null);
+  const [endTime, setEndTime] = useState<any>(null);
+
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const moveToNewQuote = () => {
+    const payloadSchema = [
+      {
+        quote_title: quoteTitle,
+        quote_date: new Date().toISOString(),
+        start_time: startTime,
+        end_time: endTime,
+      },
+    ];
+
+    // dispatch this payload structure to the store
+    dispatch(savePayloadSchema(payloadSchema));
+
+    // Navigate to new quote page to continue the set up
     navigate("/new-quote");
   };
 
@@ -31,6 +52,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 text-sm rounded-md focus:outline-none focus:ring focus:border-blue-300"
                 placeholder="Enter quote title here"
+                onChange={(e) => setQuoteTitle(e.target.value)}
               />
             </div>
             <div className="my-6 flex justify-between">
@@ -41,6 +63,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <input
                   type="time"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                  onChange={(e) => setStartTime(e.target.value)}
                 />
               </div>
               <div className="w-1/2 pl-2">
@@ -50,6 +73,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <input
                   type="time"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                  onChange={(e) => setEndTime(e.target.value)}
                 />
               </div>
             </div>

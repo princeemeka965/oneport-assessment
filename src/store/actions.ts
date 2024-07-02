@@ -5,6 +5,7 @@ import {
   POST_QUOTE_DATA_REQUEST,
   POST_QUOTE_DATA_SUCCESS,
   POST_QUOTE_DATA_FAILURE,
+  SAVE_PAYLOAD_SCHEMA,
 } from "./actionTypes";
 
 export const getQuoteDataRequest = (data: any) => ({
@@ -34,5 +35,10 @@ export const postQuoteSuccess = (data: any) => ({
 
 export const postQuoteDataFailure = (data: any) => ({
   type: POST_QUOTE_DATA_FAILURE,
+  payload: data,
+});
+
+export const savePayloadSchema = (data: any) => ({
+  type: SAVE_PAYLOAD_SCHEMA,
   payload: data,
 });

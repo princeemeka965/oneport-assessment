@@ -19,6 +19,8 @@ const SideBar: React.FC<ChildComponentProps> = ({
   quoteData,
   openQuote,
 }) => {
+  if (!sideBarOpen) return null;
+
   const getQuoteAmount = (quoteSections: {}[]): String => {
     const sectionTotal = quoteSections.reduce(
       (sectionSum: any, section: any) => {
