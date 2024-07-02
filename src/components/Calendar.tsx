@@ -122,7 +122,6 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
   };
 
   const currentMonth = new Date().getMonth(); // get the current Month
-  const currentDay = new Date().getDate(); // get today's date
   const currentYear = new Date().getFullYear(); // get current Year
 
   const [year, setYear] = useState<number>(currentYear); // Set the current Year
