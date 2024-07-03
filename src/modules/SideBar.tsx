@@ -1,5 +1,5 @@
 import React from "react";
-import { Sun } from "./SvgIcons";
+import { Sun } from "../components/SvgIcons";
 import {
   convertToLocaleTime,
   formatISODate,

@@ -7,8 +7,8 @@ import {
   NigeriaIcon,
   TrashIcon,
   USAIcon,
-} from "./SvgIcons";
-import { savePayloadSchema } from "../store/actions";
+} from "../components/SvgIcons";
+import { postQuoteRequest, savePayloadSchema } from "../store/actions";
 
 interface ChildComponentProps {
   openCurrency: (data: Boolean) => void;
@@ -88,7 +88,7 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
     const newBasis = {
       _id: Math.random().toString(),
       basis: "",
-      unit_of_measurement: "",
+      unit_of_measurement: "Kilogram",
       unit: 0,
       rate: 0,
       amount: 0,
@@ -104,7 +104,12 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
       return section;
     });
 
-    setSectionsData({ ...sectionsData, sections: updatedSections });
+    const updatedSectionsData = { ...sectionsData, sections: updatedSections };
+
+    // send the new payload schema to the store
+    dispatch(savePayloadSchema(updatedSectionsData));
+
+    setSectionsData(updatedSectionsData);
   };
 
   /**
@@ -124,7 +129,12 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
       return section;
     });
 
-    setSectionsData({ ...sectionsData, sections: updatedSections });
+    const updatedSectionsData = { ...sectionsData, sections: updatedSections };
+
+    // send the new payload schema to the store
+    dispatch(savePayloadSchema(updatedSectionsData));
+
+    setSectionsData(updatedSectionsData);
   };
 
   /**
@@ -151,7 +161,12 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
       return section;
     });
 
-    setSectionsData({ ...sectionsData, sections: updatedSections });
+    const updatedSectionsData = { ...sectionsData, sections: updatedSections };
+
+    // send the new payload schema to the store
+    dispatch(savePayloadSchema(updatedSectionsData));
+
+    setSectionsData(updatedSectionsData);
   };
 
   /**
@@ -175,14 +190,24 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
         return {
           ...section,
           section_data: section.section_data.map((data: any) =>
-            data._id === dataId ? { ...data, [slug]: newValue } : data
+            data._id === dataId
+              ? {
+                  ...data,
+                  [slug]: slug === "rate" ? Number(newValue) : newValue,
+                }
+              : data
           ),
         };
       }
       return section;
     });
 
-    setSectionsData({ ...sectionsData, sections: updatedSections });
+    const updatedSectionsData = { ...sectionsData, sections: updatedSections };
+
+    // send the new payload schema to the store
+    dispatch(savePayloadSchema(updatedSectionsData));
+
+    setSectionsData(updatedSectionsData);
   };
 
   /**
@@ -196,7 +221,12 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
       (section: any) => section._id !== data
     );
 
-    setSectionsData({ ...sectionsData, sections: updatedSections });
+    const updatedSectionsData = { ...sectionsData, sections: updatedSections };
+
+    // send the new payload schema to the store
+    dispatch(savePayloadSchema(updatedSectionsData));
+
+    setSectionsData(updatedSectionsData);
   };
 
   /**
@@ -213,11 +243,56 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
       return { ...section, section_data: filteredData };
     });
 
-    setSectionsData({ ...sectionsData, sections: updatedSections });
+    const updatedSectionsData = { ...sectionsData, sections: updatedSections };
+
+    // send the new payload schema to the store
+    dispatch(savePayloadSchema(updatedSectionsData));
+
+    setSectionsData(updatedSectionsData);
   };
 
   const openCurrencyModal = (sectionId: any) => {
     openCurrency(sectionId);
+  };
+
+  /**
+   * Function to Create Quote
+   */
+  const createQuote = () => {
+    // first we remove all Id and start, end time used in the payload schema
+    const formatPayload = removeUnwantedFields(sectionsData);
+
+    // Create the Quote
+    dispatch(postQuoteRequest(formatPayload));
+  };
+
+  /**
+   *
+   * @param data
+   * @returns
+   *
+   * Function to remove all fields that are not needed
+   */
+  const removeUnwantedFields = (data: any) => {
+    const { start_time, end_time, ...rest } = data; // Remove start_time and end_time from the top level
+    const cleanedData = { ...rest }; // Copy the remaining data
+
+    if (cleanedData.sections) {
+      cleanedData.sections = cleanedData.sections.map((section: any) => {
+        const { _id, ...cleanedSection } = section; // Remove _id from section
+        if (cleanedSection.section_data) {
+          cleanedSection.section_data = cleanedSection.section_data.map(
+            (item: any) => {
+              const { _id, ...cleanedItem } = item; // Remove _id from each item in section_data
+              return cleanedItem;
+            }
+          );
+        }
+        return cleanedSection;
+      });
+    }
+
+    return cleanedData;
   };
 
   return (
@@ -508,6 +583,7 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
         <button
           type="button"
           className="py-2 px-4 flex justify-center rounded-md bg-darkGreen border-2 text-white text-[13px] lg:text-sm"
+          onClick={() => createQuote()}
         >
           Save Quote
         </button>

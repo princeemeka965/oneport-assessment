@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ChevronLeft, ChevronRight } from "./SvgIcons";
+import { ChevronLeft, ChevronRight } from "../components/SvgIcons";
 import { getQuoteDataRequest } from "../store/actions";
 import { checkCurrentDate, convertToISOString } from "../helpers/timeFormat";
 
@@ -173,13 +173,11 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
   }
 
   const getWeekDetails = (data: any) => {
-    if (data.length > 0) {
-      const propsObj: { quoteObj: any; openModal: Boolean } = {
-        quoteObj: data,
-        openModal: true,
-      };
-      openDrawer(propsObj);
-    }
+    const propsObj: { quoteObj: any; openModal: Boolean } = {
+      quoteObj: data,
+      openModal: true,
+    };
+    openDrawer(propsObj);
   };
 
   const getMonthsValue = (data: string): string => {

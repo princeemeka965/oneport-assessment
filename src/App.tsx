@@ -1,7 +1,7 @@
 import React from "react";
-import Calendar from "./components/Calendar";
-import SideBar from "./components/SideBar";
-import CreateQuoteModal from "./components/CreateQuoteModal";
+import Calendar from "./modules/Calendar";
+import SideBar from "./modules/SideBar";
+import CreateQuoteModal from "./modules/CreateQuoteModal";
 
 function App() {
   const [open, setOpen] = React.useState<Boolean>(false);
@@ -9,8 +9,12 @@ function App() {
   const [singleQuote, setSingleQuote] = React.useState<{}[]>([]);
 
   const handleOpenDrawer = (data: { quoteObj: any; openModal: Boolean }) => {
-    setOpen(data.openModal);
-    setSingleQuote(data.quoteObj);
+    if (Object.keys(data.quoteObj).length > 0) {
+      setOpen(data.openModal);
+      setSingleQuote(data.quoteObj);
+    } else {
+      setOpenQuote(true);
+    }
   };
 
   const handleOpenQuote = (data: Boolean) => {

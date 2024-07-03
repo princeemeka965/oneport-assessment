@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Select, Option, Checkbox } from "@material-tailwind/react";
-import Modal from "./Modal";
-import { NigeriaIcon, USAIcon } from "./SvgIcons";
+import Modal from "../components/Modal";
+import { NigeriaIcon, USAIcon } from "../components/SvgIcons";
 import { savePayloadSchema } from "../store/actions";
 
 interface SetCurrencyModalProps {

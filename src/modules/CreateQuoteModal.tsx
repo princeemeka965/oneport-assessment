@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Modal from "./Modal";
+import Modal from "../components/Modal";
 import { savePayloadSchema } from "../store/actions";
 
 interface ModalProps {
@@ -39,7 +39,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             {
               _id: Math.random(),
               basis: "",
-              unit_of_measurement: "",
+              unit_of_measurement: "Kilogram",
               unit: 0,
               rate: 0,
               amount: 0,

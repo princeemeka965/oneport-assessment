@@ -5,10 +5,10 @@ import TimeRangePicker from "@wojtekmaj/react-timerange-picker";
 import "@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css";
 import "react-clock/dist/Clock.css";
 import { useNavigate } from "react-router-dom";
-import SectionsBlock from "./components/SectionsBlock";
-import SetCurrencyModal from "./components/SetCurrencyModal";
+import SectionsBlock from "./modules/SectionsBlock";
+import SetCurrencyModal from "./modules/SetCurrencyModal";
 import { formatDateToString, formatISODate } from "./helpers/timeFormat";
-import PreviewQuote from "./components/PreviewQuote";
+import PreviewQuote from "./modules/PreviewQuote";
 
 function NewQuote() {
   const navigate = useNavigate();

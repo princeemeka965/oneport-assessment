@@ -1,7 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { CloseIcon, DownloadIcon } from "./SvgIcons";
+import { useSelector, useDispatch } from "react-redux";
+import { CloseIcon, DownloadIcon } from "../components/SvgIcons";
 import { formatDateToString } from "../helpers/timeFormat";
+import { postQuoteRequest } from "../store/actions";
 
 interface ModalProps {
   isOpen: Boolean;
@@ -9,9 +10,13 @@ interface ModalProps {
 }
 
 const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
+
   const { quotePayload } = useSelector((state: any) => ({
     quotePayload: state.quotePayload,
   }));
+
+  if (!isOpen) return null;
 
   const totalUnitOfMeasurement = quotePayload.sections.reduce(
     (total: any, section: any) => {
@@ -25,6 +30,43 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     0
   );
 
+  const createQuote = () => {
+    // first we remove all Id and start, end time used in the payload schema
+    const formatPayload = removeUnwantedFields(quotePayload);
+
+    // Create the Quote
+    dispatch(postQuoteRequest(formatPayload));
+  };
+
+  /**
+   *
+   * @param data
+   * @returns
+   *
+   * Function to remove all fields that are not needed
+   */
+  const removeUnwantedFields = (data: any) => {
+    const { start_time, end_time, ...rest } = data; // Remove start_time and end_time from the top level
+    const cleanedData = { ...rest }; // Copy the remaining data
+
+    if (cleanedData.sections) {
+      cleanedData.sections = cleanedData.sections.map((section: any) => {
+        const { _id, ...cleanedSection } = section; // Remove _id from section
+        if (cleanedSection.section_data) {
+          cleanedSection.section_data = cleanedSection.section_data.map(
+            (item: any) => {
+              const { _id, ...cleanedItem } = item; // Remove _id from each item in section_data
+              return cleanedItem;
+            }
+          );
+        }
+        return cleanedSection;
+      });
+    }
+
+    return cleanedData;
+  };
+
   let TABLE_HEAD: String[] = [
     "Basics",
     "Unit of measure",
@@ -35,7 +77,7 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   const getTotalAmount = (sectionData: any) => {
     const totalAmount = sectionData.reduce((total: any, item: any) => {
-      return total + item.amount;
+      return Number(total) + Number(item.amount);
     }, 0);
 
     return totalAmount;
@@ -43,8 +85,8 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-seaGreen bg-opacity-50 overflow-y-auto">
-        <div className="bg-white rounded-md shadow-lg lg:w-11/12 md:w-11/12 w-full">
+      <div className="fixed inset-0 z-50 flex pt-52 items-center justify-center bg-seaGreen bg-opacity-50 overflow-y-auto">
+        <div className="bg-white rounded-md shadow-lg lg:w-11/12 md:w-11/12 w-full mt-20">
           <header className="w-full flex lg:p-9 md:p-9 py-6 rounded-t-md px-4 bg-lightGray">
             <div className="w-full flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
               <div className="flex flex-col lg:gap-2 gap-4">
@@ -65,6 +107,7 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   type="button"
                   className="py-2 px-4 flex justify-center rounded-md border text-white text-[13px] lg:text-sm"
                   style={{ backgroundColor: "#296FD8" }}
+                  onClick={() => createQuote()}
                 >
                   Save Quote
                 </button>
@@ -80,6 +123,7 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   className="py-2 px-2 flex justify-center gap-2 rounded-md border bg-white"
+                  onClick={onClose}
                 >
                   <span className="w-5 h-5">
                     <CloseIcon />
