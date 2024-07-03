@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Card } from "@material-tailwind/react";
 import {
   ArrowLeft,
@@ -8,18 +8,29 @@ import {
   TrashIcon,
   USAIcon,
 } from "./SvgIcons";
+import { savePayloadSchema } from "../store/actions";
 
 interface ChildComponentProps {
   openCurrency: (data: Boolean) => void;
 }
 
 const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
+  const dispatch = useDispatch();
+
   const { quotePayload } = useSelector((state: any) => ({
     quotePayload: state.quotePayload,
   }));
 
   // get the payload schema saved in the store and set it as a state value here
   const [sectionsData, setSectionsData] = React.useState<any>(quotePayload);
+
+  /**
+   * Use useEffect to update sectionsData when quotePayload changes
+   * This is needed to reflect currency changes made in SetCurrencyModal
+   */
+  useEffect(() => {
+    setSectionsData(quotePayload);
+  }, [quotePayload]);
 
   let TABLE_HEAD: String[] = [
     "Basics",
@@ -41,7 +52,7 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
       section_currency: {
         currency: "USD",
         exchange_rate: 1119.53,
-        is_base_currency: true,
+        is_base_currency: false,
         customer_currency: "NGN",
       },
       section_data: [
@@ -60,6 +71,9 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
       ...sectionsData,
       sections: [...sectionsData.sections, newSections],
     };
+
+    // send the new payload schema to the store
+    dispatch(savePayloadSchema(updatedSectionsData));
 
     setSectionsData(updatedSectionsData);
   };
@@ -202,11 +216,9 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
     setSectionsData({ ...sectionsData, sections: updatedSections });
   };
 
-  const openCurrencyModal = () => {
-    openCurrency(true);
+  const openCurrencyModal = (sectionId: any) => {
+    openCurrency(sectionId);
   };
-
-  console.log(sectionsData);
 
   return (
     <>
@@ -454,7 +466,7 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
                 <div className="bottom-2 justify-center flex mb-3 px-2 w-full">
                   <button
                     className="py-2 px-4 w-full flex justify-center rounded-md bg-lightGray border text-[13px] lg:text-sm"
-                    onClick={() => openCurrencyModal()}
+                    onClick={() => openCurrencyModal(section._id)}
                   >
                     Edit section currency
                   </button>

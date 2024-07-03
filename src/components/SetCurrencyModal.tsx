@@ -1,20 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Select, Option, Checkbox } from "@material-tailwind/react";
 import Modal from "./Modal";
 import { NigeriaIcon, USAIcon } from "./SvgIcons";
+import { savePayloadSchema } from "../store/actions";
 
 interface SetCurrencyModalProps {
   isOpen: Boolean;
+  sectionId: any;
   onClose: () => void;
 }
 
 const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
   isOpen,
   onClose,
+  sectionId,
 }) => {
-  const [isBaseCurrency, setIsBaseCurrency] = useState(false);
+  const dispatch = useDispatch();
 
-  if (!isOpen) return null;
+  const { quotePayload } = useSelector((state: any) => ({
+    quotePayload: state.quotePayload,
+  }));
+
+  const [isBaseCurrency, setIsBaseCurrency] = useState(false);
+  const [sectionCurrency, setSectionCurrency] = useState("");
+  const [customerCurrency, setCustomerCurrency] = useState("");
+  const [exchangeRate, setExchangeRate] = useState("");
+
+  useEffect(() => {
+    quotePayload.sections.forEach((section: any) => {
+      setSectionCurrency(section.section_currency.currency);
+      setCustomerCurrency(section.section_currency.customer_currency);
+      setExchangeRate(section.section_currency.exchange_rate);
+    });
+  }, [quotePayload.sections]);
+
+  if (!isOpen) {
+    return null;
+  }
 
   let countries: {}[] = [
     {
@@ -26,6 +49,48 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
       name: "NGN",
     },
   ];
+
+  const changeCustomerCurrency = (data: any) => {
+    setCustomerCurrency(data);
+  };
+
+  const changeSectionCurrency = (data: any) => {
+    setSectionCurrency(data);
+  };
+
+  const changeCurrencyRate = (data: any) => {
+    setExchangeRate(data.target.value);
+  };
+
+  const setSectionCurrencySchema = (): any => {
+    const updatedSections = quotePayload.sections.map((section: any) => {
+      if (section._id === sectionId) {
+        return {
+          ...section,
+          section_currency: {
+            ...section.section_currency,
+            currency: sectionCurrency,
+            customer_currency: customerCurrency,
+            is_base_currency: isBaseCurrency,
+            exchange_rate: isBaseCurrency ? "1" : exchangeRate,
+          },
+        };
+      }
+      return section;
+    });
+
+    const updatedSectionsData = {
+      ...quotePayload,
+      sections: updatedSections,
+    };
+
+    /**
+     * send the new payload schema to the store
+     * and close the modal
+     */
+    dispatch(savePayloadSchema(updatedSectionsData));
+    onClose();
+  };
 
   return (
     <Modal
@@ -50,9 +115,11 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
                       "flex items-center opacity-100 px-0 gap-2 pointer-events-none",
                   })
                 }
+                value={sectionCurrency}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
+                onChange={(e) => changeSectionCurrency(e)}
               >
                 {countries.map((country: any) => (
                   <Option
@@ -86,7 +153,10 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
                     crossOrigin={null}
                     color="green"
                     checked={isBaseCurrency}
-                    onChange={() => setIsBaseCurrency(true)}
+                    onChange={() => [
+                      setIsBaseCurrency(true),
+                      setCustomerCurrency(sectionCurrency),
+                    ]}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                   />
@@ -128,10 +198,11 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
                         "flex items-center opacity-100 px-0 gap-2 pointer-events-none",
                     })
                   }
-                  value={"NGN"}
+                  value={customerCurrency}
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
+                  onChange={(e) => changeCustomerCurrency(e)}
                 >
                   {countries.map((country: any) => (
                     <Option
@@ -162,11 +233,15 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
                 </label>
                 <div className="w-full px-3 flex gap-3 py-2 border border-gray-300 rounded-md">
                   <span className="w-[24px]">
-                    <NigeriaIcon />
+                    {customerCurrency === "USD" ? <USAIcon /> : <NigeriaIcon />}
                   </span>
-                  <p className="flex flex-col justify-center text-sm">
-                    &#8358;1,119.53
-                  </p>
+                  <input
+                    type="text"
+                    className="w-full px-3 border-none text-sm focus:outline-none"
+                    placeholder="Enter quote title here"
+                    onChange={(e) => changeCurrencyRate(e)}
+                    value={isBaseCurrency ? 1 : exchangeRate}
+                  />
                 </div>
               </div>
             </div>
@@ -175,7 +250,10 @@ const SetCurrencyModal: React.FC<SetCurrencyModalProps> = ({
           <div className="w-full border" />
 
           <div className="p-6 flex w-full justify-center">
-            <button className="py-2 px-4 w-full flex justify-center text-white rounded-md bg-shinyBlack border text-[13px] lg:text-sm">
+            <button
+              className="py-2 px-4 w-full flex justify-center text-white rounded-md bg-shinyBlack border text-[13px] lg:text-sm"
+              onClick={() => setSectionCurrencySchema()}
+            >
               Set section currency
             </button>
           </div>

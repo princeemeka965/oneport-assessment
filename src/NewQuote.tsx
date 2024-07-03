@@ -13,13 +13,17 @@ function NewQuote() {
   const navigate = useNavigate();
 
   const [openModal, setOpen] = React.useState<Boolean>(false);
+  const [sectionId, setSectionId] = React.useState<any>(null);
 
   const { quotePayload } = useSelector((state: any) => ({
     quotePayload: state.quotePayload,
   }));
 
-  const handleCurrencyModal = (data: Boolean) => {
-    setOpen(data);
+  const handleCurrencyModal = (data: any) => {
+    if (data) {
+      setOpen(true);
+      setSectionId(data);
+    }
   };
 
   return (
@@ -101,7 +105,11 @@ function NewQuote() {
         {/**
          * Set Currency Modal
          */}
-        <SetCurrencyModal isOpen={openModal} onClose={() => setOpen(false)} />
+        <SetCurrencyModal
+          isOpen={openModal}
+          sectionId={sectionId}
+          onClose={() => setOpen(false)}
+        />
       </div>
     </>
   );

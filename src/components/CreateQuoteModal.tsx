@@ -32,7 +32,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           section_currency: {
             currency: "USD",
             exchange_rate: 1119.53,
-            is_base_currency: true,
+            is_base_currency: false,
             customer_currency: "NGN",
           },
           section_data: [
