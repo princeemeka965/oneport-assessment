@@ -8,11 +8,13 @@ import { useNavigate } from "react-router-dom";
 import SectionsBlock from "./components/SectionsBlock";
 import SetCurrencyModal from "./components/SetCurrencyModal";
 import { formatDateToString, formatISODate } from "./helpers/timeFormat";
+import PreviewQuote from "./components/PreviewQuote";
 
 function NewQuote() {
   const navigate = useNavigate();
 
   const [openModal, setOpen] = React.useState<Boolean>(false);
+  const [openPreview, setOpenPreview] = React.useState<Boolean>(false);
   const [sectionId, setSectionId] = React.useState<any>(null);
 
   const { quotePayload } = useSelector((state: any) => ({
@@ -61,6 +63,7 @@ function NewQuote() {
               type="button"
               className="py-2 px-4 flex justify-center gap-2 rounded-md border-2 bg-lightGreen text-[13px] lg:text-sm"
               style={{ color: "#005C00" }}
+              onClick={() => setOpenPreview(true)}
             >
               <span className="flex flex-col pt-[2px] justify-center">
                 <EyeIcon />
@@ -109,6 +112,13 @@ function NewQuote() {
           isOpen={openModal}
           sectionId={sectionId}
           onClose={() => setOpen(false)}
+        />
+        {/**
+         * Preview Quote Modal
+         */}
+        <PreviewQuote
+          isOpen={openPreview}
+          onClose={() => setOpenPreview(false)}
         />
       </div>
     </>

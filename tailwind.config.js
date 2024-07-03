@@ -21,6 +21,8 @@ module.exports = withMT({
         seaGreen: "#0618028C",
         lightGreen: "#37B24833",
         lightGray: "#FAFAFA",
+        grayCloud: "#9CA3AF",
+        pencilLead: "#4B5563",
         maniacGray: "#F9FAFB",
         boltGreen: "#139C33"
       }

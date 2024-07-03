@@ -64,18 +64,18 @@ export function formatDateToString(dateString: string): string {
 
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
-    "Jan",
-    "Feb",
+    "January",
+    "February",
     "March",
     "April",
     "May",
     "June",
     "July",
-    "Aug",
-    "Sept",
-    "Oct",
-    "Nov",
-    "Dec",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const dayName = days[date.getUTCDay()];
