@@ -58,3 +58,44 @@ export function getDayName(isoDate: any) {
   // Return the corresponding day name
   return days[dayIndex];
 }
+
+export function formatDateToString(dateString: string): string {
+  const date = new Date(dateString);
+
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = [
+    "Jan",
+    "Feb",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const dayName = days[date.getUTCDay()];
+  const day = date.getUTCDate();
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+
+  const daySuffix = (day: number): string => {
+    if (day > 3 && day < 21) return "th"; // for 11th, 12th, 13th
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+
+  return `${dayName} ${day}${daySuffix(day)} ${month}, ${year}`;
+}

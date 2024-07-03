@@ -19,14 +19,35 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
 
   const moveToNewQuote = () => {
-    const payloadSchema = [
-      {
-        quote_title: quoteTitle,
-        quote_date: new Date().toISOString(),
-        start_time: startTime,
-        end_time: endTime,
-      },
-    ];
+    const payloadSchema = {
+      quote_title: quoteTitle,
+      quote_date: new Date().toISOString(),
+      start_time: startTime,
+      end_time: endTime,
+      sections: [
+        {
+          _id: Math.random().toString(),
+          section_name: "",
+          section_number: 1,
+          section_currency: {
+            currency: "USD",
+            exchange_rate: 1119.53,
+            is_base_currency: true,
+            customer_currency: "NGN",
+          },
+          section_data: [
+            {
+              _id: Math.random(),
+              basis: "",
+              unit_of_measurement: "",
+              unit: 0,
+              rate: 0,
+              amount: 0,
+            },
+          ],
+        },
+      ],
+    };
 
     // dispatch this payload structure to the store
     dispatch(savePayloadSchema(payloadSchema));

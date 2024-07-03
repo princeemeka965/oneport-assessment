@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { Card } from "@material-tailwind/react";
 import {
   ArrowLeft,
@@ -12,37 +13,13 @@ interface ChildComponentProps {
   openCurrency: (data: Boolean) => void;
 }
 
-interface SectionDataProps {
-  _id: String;
-  section_name: String;
-  section_number: Number;
-  section_currency: String;
-  section_data: {}[];
-}
-
-let sections: SectionDataProps[];
-
-sections = [
-  {
-    _id: "666e58e5acf1e952ba513199",
-    section_name: "ORIGIN HANDLING CHARGES",
-    section_number: 1,
-    section_currency: "NGN",
-    section_data: [
-      {
-        _id: "666e58e5acf1e952ba51319a",
-        basis: "Basis 1",
-        unit_of_measurement: "Kilogram",
-        unit: 10,
-        rate: 5,
-        amount: 50,
-      },
-    ],
-  },
-];
-
 const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
-  const [sectionsData, setSectionsData] = React.useState<any>(sections);
+  const { quotePayload } = useSelector((state: any) => ({
+    quotePayload: state.quotePayload,
+  }));
+
+  // get the payload schema saved in the store and set it as a state value here
+  const [sectionsData, setSectionsData] = React.useState<any>(quotePayload);
 
   let TABLE_HEAD: String[] = [
     "Basics",
@@ -54,30 +31,86 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
   ];
 
   /**
+   * Function to add more sections to the Block
+   */
+  const addMoreSections = () => {
+    const newSections = {
+      _id: Math.random().toString(),
+      section_name: "",
+      section_number: 2,
+      section_currency: {
+        currency: "USD",
+        exchange_rate: 1119.53,
+        is_base_currency: true,
+        customer_currency: "NGN",
+      },
+      section_data: [
+        {
+          id: Math.random().toString(),
+          basis: "",
+          unit_of_measurement: "",
+          unit: 0,
+          rate: 0,
+          amount: 0,
+        },
+      ],
+    };
+
+    const updatedSectionsData = {
+      ...sectionsData,
+      sections: [...sectionsData.sections, newSections],
+    };
+
+    setSectionsData(updatedSectionsData);
+  };
+
+  /**
+   *
+   * @param data
    *
    * Function to add new data to each section
    */
   const addNewBasis = (data: any) => {
-    setSectionsData((prevSectionsData: any) =>
-      prevSectionsData.map((section: any) =>
-        section._id === data
-          ? {
-              ...section,
-              section_data: [
-                ...section.section_data,
-                {
-                  _id: Math.random(),
-                  basis: "",
-                  unit_of_measurement: "",
-                  unit: 0,
-                  rate: 0,
-                  amount: 0,
-                },
-              ],
-            }
-          : section
-      )
-    );
+    const newBasis = {
+      _id: Math.random().toString(),
+      basis: "",
+      unit_of_measurement: "",
+      unit: 0,
+      rate: 0,
+      amount: 0,
+    };
+
+    const updatedSections = sectionsData.sections.map((section: any) => {
+      if (section._id === data) {
+        return {
+          ...section,
+          section_data: [...section.section_data, newBasis],
+        };
+      }
+      return section;
+    });
+
+    setSectionsData({ ...sectionsData, sections: updatedSections });
+  };
+
+  /**
+   *
+   * @param e
+   * @param sectionId
+   *
+   * Function to Change name of each Section
+   */
+  const handleSectionName = (e: any, sectionId: any) => {
+    const newValue = e.target.value;
+
+    const updatedSections = sectionsData.sections.map((section: any) => {
+      if (section._id === sectionId) {
+        return { ...section, section_name: newValue };
+      }
+      return section;
+    });
+
+    setSectionsData({ ...sectionsData, sections: updatedSections });
   };
 
   /**
@@ -85,24 +118,26 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
    * @param e
    * @param sectionId
    * @param dataId
-   * Function to change measurement value
+   * Function to change measurement value of each section basis
    */
   const changeMeasurement = (e: any, sectionId: any, dataId: any) => {
     const newMeasurement = e.target.value;
-    setSectionsData((prevSectionsData: any) =>
-      prevSectionsData.map((section: any) =>
-        section._id === sectionId
-          ? {
-              ...section,
-              section_data: section.section_data.map((data: any) =>
-                data._id === dataId
-                  ? { ...data, unit_of_measurement: newMeasurement }
-                  : data
-              ),
-            }
-          : section
-      )
-    );
+
+    const updatedSections = sectionsData.sections.map((section: any) => {
+      if (section._id === sectionId) {
+        return {
+          ...section,
+          section_data: section.section_data.map((data: any) =>
+            data._id === dataId
+              ? { ...data, unit_of_measurement: newMeasurement }
+              : data
+          ),
+        };
+      }
+      return section;
+    });
+
+    setSectionsData({ ...sectionsData, sections: updatedSections });
   };
 
   /**
@@ -121,44 +156,19 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
     slug: any
   ) => {
     const newValue = e.target.value;
-    setSectionsData((prevSectionsData: any) =>
-      prevSectionsData.map((section: any) =>
-        section._id === sectionId
-          ? {
-              ...section,
-              section_data: section.section_data.map((data: any) =>
-                data._id === dataId ? { ...data, [slug]: newValue } : data
-              ),
-            }
-          : section
-      )
-    );
-  };
+    const updatedSections = sectionsData.sections.map((section: any) => {
+      if (section._id === sectionId) {
+        return {
+          ...section,
+          section_data: section.section_data.map((data: any) =>
+            data._id === dataId ? { ...data, [slug]: newValue } : data
+          ),
+        };
+      }
+      return section;
+    });
 
-  /**
-   * Function to add more sections to the Block
-   */
-  const addMoreSections = () => {
-    const newSections = {
-      _id: Math.random(),
-      section_name: "",
-      section_number: 1,
-      section_currency: "NGN",
-      section_data: [
-        {
-          _id: Math.random(),
-          basis: "",
-          unit_of_measurement: "",
-          unit: 0,
-          rate: 0,
-          amount: 0,
-        },
-      ],
-    };
-    setSectionsData((prevSectionsData: any) => [
-      ...prevSectionsData,
-      newSections,
-    ]);
+    setSectionsData({ ...sectionsData, sections: updatedSections });
   };
 
   /**
@@ -168,11 +178,11 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
    * where data is id of selected section
    */
   const removeSection = (data: any) => {
-    // get sections aside from the removed one
-    const filteredSection = sectionsData.filter(
-      (section: SectionDataProps) => section._id !== data
+    const updatedSections = sectionsData.sections.filter(
+      (section: any) => section._id !== data
     );
-    setSectionsData(filteredSection);
+
+    setSectionsData({ ...sectionsData, sections: updatedSections });
   };
 
   /**
@@ -182,25 +192,25 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
    * where contentsId is the id of the row to be remove
    */
   const deleteBasis = (contentsId: any) => {
-    const updatedSections = sectionsData.map((section: any) => {
-      return {
-        ...section,
-        section_data: section.section_data.filter(
-          (item: any) => item._id !== contentsId
-        ),
-      };
+    const updatedSections = sectionsData.sections.map((section: any) => {
+      const filteredData = section.section_data.filter(
+        (item: any) => item._id !== contentsId
+      );
+      return { ...section, section_data: filteredData };
     });
 
-    setSectionsData(updatedSections);
+    setSectionsData({ ...sectionsData, sections: updatedSections });
   };
 
   const openCurrencyModal = () => {
     openCurrency(true);
   };
 
+  console.log(sectionsData);
+
   return (
     <>
-      {sectionsData.map((section: SectionDataProps, index: number) => (
+      {sectionsData.sections.map((section: any, index: number) => (
         <>
           <div
             className="w-full flex lg:flex-row md:flex-row flex-col gap-12 lg:mb-0 md:mb-0 mb-7"
@@ -218,6 +228,7 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
                     } text-sm`}
                     placeholder="Enter Section Label"
                     value={`${section.section_name}`}
+                    onChange={(e) => handleSectionName(e, section._id)}
                   />
                 </div>
                 {/** Remove other sections except the first one */}
@@ -258,102 +269,106 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {section.section_data.map((contents: any, index) => {
-                      const classes = "p-4 border-b border-blue-gray-50";
+                    {section.section_data.map(
+                      (contents: any, index: number) => {
+                        const classes = "p-4 border-b border-blue-gray-50";
 
-                      return (
-                        <tr key={index}>
-                          <td className={classes}>
-                            <input
-                              type="text"
-                              className="w-full h-full py-2 px-1 focus:outline-none text-sm"
-                              placeholder="Enter Basis"
-                              value={`${contents.basis}`}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  e,
-                                  section._id,
-                                  contents._id,
-                                  "basis"
-                                )
-                              }
-                            />
-                          </td>
-                          <td className={classes}>
-                            <div className="lg:w-[200px] w-[160px]">
-                              <select
-                                className="h-full py-2 px-1 bg-white focus:outline-none text-sm"
-                                value={`${contents.unit_of_measurement}`}
+                        return (
+                          <tr key={contents._id}>
+                            <td className={classes}>
+                              <input
+                                type="text"
+                                className="w-full h-full py-2 px-1 focus:outline-none text-sm"
+                                placeholder="Enter Basis"
+                                value={`${contents.basis}`}
                                 onChange={(e) =>
-                                  changeMeasurement(
+                                  handleInputChange(
                                     e,
                                     section._id,
-                                    contents._id
+                                    contents._id,
+                                    "basis"
                                   )
                                 }
-                              >
-                                <option value={"Kilogram"}>Per Kilogram</option>
-                                <option value={"Gram"}>Per Gram</option>
-                              </select>
-                            </div>
-                          </td>
-                          <td className={classes}>
-                            <input
-                              type="text"
-                              className="w-full h-full py-2 px-1 focus:outline-none text-sm"
-                              placeholder="Enter unit"
-                              value={`${contents.unit}`}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  e,
-                                  section._id,
-                                  contents._id,
-                                  "unit"
-                                )
-                              }
-                            />
-                          </td>
-                          <td className={classes}>
-                            <input
-                              type="text"
-                              className="w-full h-full py-2 px-1 focus:outline-none text-sm"
-                              placeholder="Enter rate"
-                              value={`${contents.rate}`}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  e,
-                                  section._id,
-                                  contents._id,
-                                  "rate"
-                                )
-                              }
-                            />
-                          </td>
-                          <td className={classes}>
-                            <input
-                              type="text"
-                              className="w-full h-full py-2 px-1 focus:outline-none text-sm"
-                              placeholder="Amount"
-                              value={`${contents.amount}`}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  e,
-                                  section._id,
-                                  contents._id,
-                                  "amount"
-                                )
-                              }
-                            />
-                          </td>
-                          <td className={classes}>
-                            <TrashIcon
-                              className="text-desire cursor-pointer"
-                              onClick={() => deleteBasis(contents._id)}
-                            />
-                          </td>
-                        </tr>
-                      );
-                    })}
+                              />
+                            </td>
+                            <td className={classes}>
+                              <div className="lg:w-[200px] w-[160px]">
+                                <select
+                                  className="h-full py-2 px-1 bg-white focus:outline-none text-sm"
+                                  value={`${contents.unit_of_measurement}`}
+                                  onChange={(e) =>
+                                    changeMeasurement(
+                                      e,
+                                      section._id,
+                                      contents._id
+                                    )
+                                  }
+                                >
+                                  <option value={"Kilogram"}>
+                                    Per Kilogram
+                                  </option>
+                                  <option value={"Gram"}>Per Gram</option>
+                                </select>
+                              </div>
+                            </td>
+                            <td className={classes}>
+                              <input
+                                type="text"
+                                className="w-full h-full py-2 px-1 focus:outline-none text-sm"
+                                placeholder="Enter unit"
+                                value={`${contents.unit}`}
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    e,
+                                    section._id,
+                                    contents._id,
+                                    "unit"
+                                  )
+                                }
+                              />
+                            </td>
+                            <td className={classes}>
+                              <input
+                                type="text"
+                                className="w-full h-full py-2 px-1 focus:outline-none text-sm"
+                                placeholder="Enter rate"
+                                value={`${contents.rate}`}
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    e,
+                                    section._id,
+                                    contents._id,
+                                    "rate"
+                                  )
+                                }
+                              />
+                            </td>
+                            <td className={classes}>
+                              <input
+                                type="text"
+                                className="w-full h-full py-2 px-1 focus:outline-none text-sm"
+                                placeholder="Amount"
+                                value={`${contents.amount}`}
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    e,
+                                    section._id,
+                                    contents._id,
+                                    "amount"
+                                  )
+                                }
+                              />
+                            </td>
+                            <td className={classes}>
+                              <TrashIcon
+                                className="text-desire cursor-pointer"
+                                onClick={() => deleteBasis(contents._id)}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )}
                   </tbody>
                   <div
                     className="p-4 flex w-full gap-2 cursor-pointer"
@@ -427,7 +442,7 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
             </div>
           </div>
 
-          {index < sectionsData.length - 1 ? (
+          {index < sectionsData.sections.length - 1 ? (
             <div className="lg:w-3/4 border"></div>
           ) : null}
         </>

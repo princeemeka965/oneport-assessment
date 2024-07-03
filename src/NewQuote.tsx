@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { ChevronLeft, EyeIcon } from "./components/SvgIcons";
 import TimeRangePicker from "@wojtekmaj/react-timerange-picker";
 import "@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css";
@@ -6,10 +7,16 @@ import "react-clock/dist/Clock.css";
 import { useNavigate } from "react-router-dom";
 import SectionsBlock from "./components/SectionsBlock";
 import SetCurrencyModal from "./components/SetCurrencyModal";
+import { formatDateToString, formatISODate } from "./helpers/timeFormat";
 
 function NewQuote() {
   const navigate = useNavigate();
+
   const [openModal, setOpen] = React.useState<Boolean>(false);
+
+  const { quotePayload } = useSelector((state: any) => ({
+    quotePayload: state.quotePayload,
+  }));
 
   const handleCurrencyModal = (data: Boolean) => {
     setOpen(data);
@@ -29,13 +36,13 @@ function NewQuote() {
             </div>
             <div className="flex gap-2">
               <p className="lg:text-2xl md:text-2xl text-base text-shinyBlack">
-                “Quote Title Here”
+                {quotePayload.quote_title}
               </p>
               <p
                 className="lg:text-2xl md:text-2xl text-base"
                 style={{ color: "#9CA3AF" }}
               >
-                [2/5/2024]
+                [{formatISODate(quotePayload.quote_date)}]
               </p>
             </div>
           </div>
@@ -68,14 +75,17 @@ function NewQuote() {
             </p>
             <div className="w-max py-1 px-3 border-2 lg:border md:border flex lg:gap-3 gap-2 lg:-ml-0 -ml-2 rounded-full">
               <p className="text-xs text-darkGreen flex flex-col justify-center">
-                Sat 7th, May 2024
+                {formatDateToString(quotePayload.quote_date)}
               </p>
               <div className="flex border-0">
                 <TimeRangePicker
                   className={"text-xs text-gray-500 border-0"}
                   clearIcon={null}
                   clockIcon={null}
-                  value={["22:15:00", "23:45:00"]}
+                  value={[
+                    `${quotePayload.start_time}`,
+                    `${quotePayload.end_time}`,
+                  ]}
                 />
               </div>
             </div>
