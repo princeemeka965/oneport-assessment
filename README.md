@@ -8,14 +8,7 @@ ONEPORT365 is a web application designed to help users create quotes efficiently
 ### Steps
 1. Clone the repository:
     ```
-    git clone ### Prerequisites
-- Node.js (version X.X.X)
-- npm (version X.X.X) or yarn (version X.X.X)
-
-### Steps
-1. Clone the repository:
-    ```
-    git clone https://github.com/username/project-name.git
+    git clone https://github.com/princeemeka965/oneport-assessment.git
     ```
 2. Navigate to the project directory:
     ```
