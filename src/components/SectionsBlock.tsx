@@ -401,7 +401,11 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
                     Section Currency
                   </p>
                   <div className="flex flex-col w-[20px] justify-center">
-                    <USAIcon />
+                    {section.section_currency.currency === "USD" ? (
+                      <USAIcon />
+                    ) : (
+                      <NigeriaIcon />
+                    )}
                   </div>
                 </div>
                 <div className="w-full border" />
@@ -410,7 +414,11 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
                   <div className="flex w-full justify-between gap-2">
                     <div className="border p-2 flex rounded-md justify-center">
                       <span className="flex flex-col w-[20px] justify-center">
-                        <USAIcon />
+                        {section.section_currency.currency === "USD" ? (
+                          <USAIcon />
+                        ) : (
+                          <NigeriaIcon />
+                        )}
                       </span>
                     </div>
                     <div className="flex flex-col py-2">
@@ -423,9 +431,22 @@ const SectionsBlock: React.FC<ChildComponentProps> = ({ openCurrency }) => {
                     </div>
                     <div className="border w-full p-2 gap-2 rounded-md flex">
                       <span className="flex flex-col w-[20px] justify-center">
-                        <NigeriaIcon />
+                        {section.section_currency.customer_currency ===
+                        "USD" ? (
+                          <USAIcon />
+                        ) : (
+                          <NigeriaIcon />
+                        )}
                       </span>
-                      <p className="text-sm font-[500]">&#8358;1,119.53</p>
+                      <p className="text-sm font-[500]">
+                        {section.section_currency.customer_currency ===
+                        "USD" ? (
+                          `$`
+                        ) : (
+                          <span>&#8358;</span>
+                        )}
+                        {section.section_currency.exchange_rate.toLocaleString()}
+                      </p>
                     </div>
                   </div>
                 </div>
