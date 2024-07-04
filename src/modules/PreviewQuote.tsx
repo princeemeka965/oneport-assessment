@@ -85,8 +85,8 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex pt-52 items-center justify-center bg-seaGreen bg-opacity-50 overflow-y-auto">
-        <div className="bg-white rounded-md shadow-lg lg:w-11/12 md:w-11/12 w-full mt-20">
+      <div className="fixed inset-0 z-50 flex items-center justify-center pt-1 bg-seaGreen bg-opacity-50">
+        <div className="bg-white rounded-md shadow-lg lg:w-11/12 md:w-11/12 w-full max-h-full overflow-y-auto">
           <header className="w-full flex lg:p-9 md:p-9 py-6 rounded-t-md px-4 bg-lightGray">
             <div className="w-full flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
               <div className="flex flex-col lg:gap-2 gap-4">
