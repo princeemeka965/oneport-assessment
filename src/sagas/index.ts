@@ -15,6 +15,7 @@ import {
   POST_QUOTE_DATA_SUCCESS,
   POST_QUOTE_DATA_FAILURE,
 } from "../store/actionTypes";
+import { toast } from "react-toastify";
 
 interface FetchQuoteDataSuccessAction {
   type: typeof GET_QUOTE_DATA_SUCCESS;
@@ -77,13 +78,16 @@ function* postQuoteSaga(action: any): SagaReturnType<any> {
     );
     yield put<PostQuoteSuccessAction>({
       type: POST_QUOTE_DATA_SUCCESS,
-      payload: response.data.data,
+      payload: null,
     });
+    toast.success("Quote saved successfully!");
   } catch (error: any) {
     yield put<FetchDataFailureAction>({
       type: GET_QUOTE_DATA_FAILURE,
       payload: error.message,
     });
+    console.log(error);
+    // toast.error(error.response.data.message);
   }
 }
 
