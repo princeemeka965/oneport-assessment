@@ -135,7 +135,7 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   </p>
                 </div>
               </div>
-              <div className="lg:flex md:flex w-full lg:w-max md:w-max hidden justify-center gap-4">
+              <div className="lg:flex md:flex w-full lg:w-max md:w-max flex justify-center gap-4">
                 <button
                   type="button"
                   className="py-2 px-4 flex justify-center rounded-md border text-white text-[13px] lg:text-sm"
