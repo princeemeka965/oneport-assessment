@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -10,15 +11,24 @@ import NewQuote from "./NewQuote";
 import { ThemeProvider } from "@material-tailwind/react";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import ErrorBoundary from "./ErrorBoundary";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    ),
   },
   {
     path: "/new-quote",
-    element: <NewQuote />,
+    element: (
+      <ErrorBoundary>
+        <NewQuote />
+      </ErrorBoundary>
+    ),
   },
 ]);
 
