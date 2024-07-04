@@ -28,9 +28,8 @@ export const postQuoteRequest = (data: any) => ({
   payload: data,
 });
 
-export const postQuoteSuccess = (data: any) => ({
+export const postQuoteSuccess = () => ({
   type: POST_QUOTE_DATA_SUCCESS,
-  payload: data,
 });
 
 export const postQuoteDataFailure = (data: any) => ({

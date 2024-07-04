@@ -24,7 +24,6 @@ interface FetchQuoteDataSuccessAction {
 
 interface PostQuoteSuccessAction {
   type: typeof POST_QUOTE_DATA_SUCCESS;
-  payload: any;
 }
 
 interface FetchDataFailureAction {
@@ -78,8 +77,8 @@ function* postQuoteSaga(action: any): SagaReturnType<any> {
     );
     yield put<PostQuoteSuccessAction>({
       type: POST_QUOTE_DATA_SUCCESS,
-      payload: response.data.message,
     });
+    console.log(response.data);
     toast.success("Quote saved successfully!");
   } catch (error: any) {
     yield put<FetchDataFailureAction>({
