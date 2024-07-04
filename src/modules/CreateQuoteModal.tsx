@@ -7,9 +7,14 @@ import { savePayloadSchema } from "../store/actions";
 interface ModalProps {
   isOpen: Boolean;
   onClose: () => void;
+  quoteData: any;
 }
 
-const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const CreateQuoteModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  quoteData,
+}) => {
   const [quoteTitle, setQuoteTitle] = useState<String>("");
   const [startTime, setStartTime] = useState<any>(null);
   const [endTime, setEndTime] = useState<any>(null);
@@ -21,7 +26,7 @@ const CreateQuoteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const moveToNewQuote = () => {
     const payloadSchema = {
       quote_title: quoteTitle,
-      quote_date: new Date().toISOString(),
+      quote_date: quoteData[0]?.quote_date,
       start_time: startTime,
       end_time: endTime,
       sections: [

@@ -82,7 +82,7 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
       return {
         quoteCount: 0,
         totalAmount: 0,
-        quoteObj: [],
+        quoteObj: [{ quote_date: paramsDatetoISOString }],
       };
 
     // If there is quote data, find the quotes for that day
@@ -96,7 +96,7 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
       return {
         quoteCount: 0,
         totalAmount: 0,
-        quoteObj: [],
+        quoteObj: [{ quote_date: paramsDatetoISOString }],
       };
 
     // If there is quote for that day

@@ -9,15 +9,15 @@ function App() {
   const [singleQuote, setSingleQuote] = React.useState<{}[]>([]);
 
   const handleOpenDrawer = (data: { quoteObj: any; openModal: Boolean }) => {
+    setSingleQuote(data.quoteObj);
     /**
-     * First we check if the selected date has quote Items
+     * First we check if the selected date has quote Items, identified by _id
      * If true, open the side bar to view
      * If false, open the Create quote modal
      */
-    if (data.quoteObj.length > 0 && data.openModal) {
+    if (data.quoteObj[0]._id && data.openModal) {
       setOpen(data.openModal);
-      setSingleQuote(data.quoteObj);
-    } else if (data.quoteObj.length === 0 && data.openModal) {
+    } else if (!data.quoteObj[0]._id && data.openModal) {
       setOpenQuote(true);
     }
   };
@@ -38,6 +38,7 @@ function App() {
         />
         <CreateQuoteModal
           isOpen={openQuote}
+          quoteData={singleQuote}
           onClose={() => setOpenQuote(false)}
         />
       </div>
