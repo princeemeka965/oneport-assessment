@@ -85,6 +85,12 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     return totalAmount;
   };
 
+  /**
+   *
+   * @returns
+   *
+   * Function to download Quote
+   */
   const downloadQuote = async () => {
     // Get the content of the div
     const contentElement = document.getElementById("quote");
