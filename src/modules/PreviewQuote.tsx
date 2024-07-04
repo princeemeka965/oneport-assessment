@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { CloseIcon, DownloadIcon } from "../components/SvgIcons";
 import { formatDateToString } from "../helpers/timeFormat";
 import { postQuoteRequest } from "../store/actions";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 interface ModalProps {
   isOpen: Boolean;
@@ -83,6 +85,31 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     return totalAmount;
   };
 
+  const downloadQuote = async () => {
+    // Get the content of the div
+    const contentElement = document.getElementById("quote");
+    if (!contentElement) {
+      console.error("Content element not found");
+      return;
+    }
+    // Use html2canvas to capture the content of the div
+    const canvas = await html2canvas(contentElement);
+
+    // Create a PDF document
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    // Calculate the width and height of the image in PDF
+    const imgData = canvas.toDataURL("image/png");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    // Add the image to the PDF
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+    // Save the PDF
+    pdf.save("content.pdf");
+  };
+
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center pt-1 bg-seaGreen bg-opacity-50">
@@ -115,6 +142,7 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   type="button"
                   className="py-2 px-2 flex justify-center gap-2 rounded-md border bg-white"
                   style={{ color: "#296FD8" }}
+                  onClick={() => downloadQuote()}
                 >
                   <span className="w-5 h-5">
                     <DownloadIcon />
@@ -133,7 +161,10 @@ const PreviewQuote: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             </div>
           </header>
 
-          <div className="flex lg:px-20 md:px-20 w-full flex-col lg:my-8 md:my-8">
+          <div
+            className="flex lg:px-20 md:px-20 w-full flex-col lg:my-8 md:my-8 pt-10"
+            id="quote"
+          >
             <div className="border rounded-lg w-full flex flex-col p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex flex-col gap-2">
