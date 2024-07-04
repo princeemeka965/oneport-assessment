@@ -78,7 +78,7 @@ function* postQuoteSaga(action: any): SagaReturnType<any> {
     );
     yield put<PostQuoteSuccessAction>({
       type: POST_QUOTE_DATA_SUCCESS,
-      payload: null,
+      payload: response.data.message,
     });
     toast.success("Quote saved successfully!");
   } catch (error: any) {
@@ -86,8 +86,7 @@ function* postQuoteSaga(action: any): SagaReturnType<any> {
       type: GET_QUOTE_DATA_FAILURE,
       payload: error.message,
     });
-    console.log(error);
-    // toast.error(error.response.data.message);
+    toast.error(error.response.data.message);
   }
 }
 
