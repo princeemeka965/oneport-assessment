@@ -195,7 +195,7 @@ const Calendar: React.FC<ChildComponentProps> = ({ openDrawer }) => {
    */
   const navigateCalendar = (slug: String) => {
     setClickedDay(0);
-    openDrawer({ quoteObj: null, openModal: false });
+    openDrawer({ quoteObj: [], openModal: false });
     switch (slug) {
       case "back":
         if (year > 2022) {
