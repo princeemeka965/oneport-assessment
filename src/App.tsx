@@ -15,10 +15,14 @@ function App() {
      * If true, open the side bar to view
      * If false, open the Create quote modal
      */
-    if (data.quoteObj[0]._id && data.openModal) {
-      setOpen(data.openModal);
-    } else if (!data.quoteObj[0]._id && data.openModal) {
-      setOpenQuote(true);
+    if (data.quoteObj.length > 0) {
+      if (data.quoteObj[0]._id && data.openModal) {
+        setOpen(data.openModal);
+      } else if (!data.quoteObj[0]._id && data.openModal) {
+        setOpenQuote(true);
+      }
+    } else {
+      setOpen(false);
     }
   };
 
